@@ -12,8 +12,6 @@ class Fibonacci {
         int hi = 1;
         System.out.println(lo);
 
-        System.out.println(lo);
-
         while(hi < 100) {
             System.out.println(hi);
             hi = lo + hi;
