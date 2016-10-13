@@ -1,4 +1,4 @@
-package jpl.ch01.ex10;
+package jpl.ch01.ex13;
 
 class ImprovedFibonacci {
 
@@ -9,16 +9,21 @@ class ImprovedFibonacci {
         int hi = 1;
         String mark = " *";
         MarkedNum[] markedNums = new MarkedNum[MAX_INDEX];
+        String[] markedStrings =new String[MAX_INDEX];
 
-        markedNums[0] = new MarkedNum(lo);
+        int i = 0;
 
-        for(int i = 1; i < markedNums.length; i++) {
+        markedNums[i] = new MarkedNum(lo);
+        markedStrings[i] = markedNums[i].getMarkedNum(i,mark);
+
+        for(i = 1; i < markedNums.length; i++) {
             markedNums[i] = new MarkedNum(hi);
+            markedStrings[i] = markedNums[i].getMarkedNum(i,mark);
             hi = lo + hi;
             lo = hi - lo;
         }
-        for(int i = 0; i < markedNums.length; i++) {
-            System.out.println( markedNums[i].getMarkedNum(i,mark) );
+        for(i = 0; i < markedNums.length; i++) {
+            System.out.printf( "%s\thex:0x%x%n" ,markedStrings[i], markedNums[i].getNum());
         }
     }
 }
@@ -39,5 +44,9 @@ class MarkedNum {
         String retStr = index + ": " + num;
         if(isEven) { retStr += mark;}
         return retStr;
+    }
+
+    public int getNum() {
+        return num;
     }
 }
