@@ -1,4 +1,4 @@
-package jpl.ch02.ex05;
+package jpl.ch02.ex07;
 
 public class Vehicle {
     private double speed; /* km/h */
@@ -10,15 +10,15 @@ public class Vehicle {
 
     public static void main(String[] args){
 
-        Vehicle myBike = new Vehicle();
-        Vehicle speedCar = new Vehicle();
-        Vehicle noname = new Vehicle();
+        Vehicle myBike = new Vehicle("mike");
+        Vehicle speedCar = new Vehicle("lenna");
+        Vehicle noname = new Vehicle(null);
 
         myBike.registerName("my bike");
-        myBike.registerOwner("mike");
+        //myBike.registerOwner("mike");
 
         speedCar.registerName("speed car");
-        speedCar.registerOwner("lenna");
+        //speedCar.registerOwner("lenna");
         speedCar.reflectSpeed(100.0);
         speedCar.reflectDirection(0.1);
 
@@ -32,6 +32,10 @@ public class Vehicle {
         direction = 0.0;
         owner = null;
         carID = nextID++;
+    }
+    public Vehicle(String oenwer) {
+        this();
+        registerOwner(owner);
     }
 
     public void registerName(String name) {
