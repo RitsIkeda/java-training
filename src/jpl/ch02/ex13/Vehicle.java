@@ -1,6 +1,6 @@
-package jpl.ch02.ex03;
+package jpl.ch02.ex13;
 
-class Vehicle {
+public class Vehicle {
     private double speed; /* km/h */
     private double direction; /* degree clockwise */
     private String owner;
@@ -8,11 +8,15 @@ class Vehicle {
     private static long nextID = 0;
     private final long vehicleID;
 
-    Vehicle() {
+    public Vehicle() {
         speed = 0.0;
         direction = 0.0;
         owner = null;
         vehicleID = nextID++;
+    }
+    public Vehicle(String oenwer) {
+        this();
+        registerOwner(owner);
     }
 
     public void registerName(String name) {
@@ -26,6 +30,37 @@ class Vehicle {
     }
     public void reflectDirection(double direction) {
         this.direction = direction;
+    }
+    public String getName() {
+        return name;
+    }
+    public String getOwner() {
+        return owner;
+    }
+    public double getSpeed() {
+        return speed;
+    }
+    public double getDirection() {
+        return direction;
+    }
+    public long getID() {
+        return vehicleID;
+    }
+
+    public static long getMaxID() {
+        if( nextID == 0) {
+            return 0;
+        } else {
+            return nextID - 1;
+        }
+    }
+
+    public String toString() {
+        String str = "name:" + name;
+         str += " / owner:" + owner;
+         str += " / speed:" + speed;
+         str += " / direction:" + direction;
+         return str;
     }
 
     public void printVehicleInfo() {

@@ -6,13 +6,13 @@ public class Vehicle {
     private String owner;
     private String name;
     private static long nextID = 0;
-    private final long carID;
+    private final long vehicleID;
 
     public Vehicle() {
         speed = 0.0;
         direction = 0.0;
         owner = null;
-        carID = nextID++;
+        vehicleID = nextID++;
     }
     public Vehicle(String oenwer) {
         this();
@@ -43,6 +43,6 @@ public class Vehicle {
         System.out.println("owner name: " + owner );
         System.out.println("speed(km/h) " + speed + " km/h" );
         System.out.println("direction: " + direction + " degree (clockwise)" );
-        System.out.println("carID: " + carID );
+        System.out.println("vehicleID: " + vehicleID );
     }
 }
