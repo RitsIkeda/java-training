@@ -1,15 +1,18 @@
 package jpl.ch02.ex01;
 
 class Vehicle {
-    private double speed; /* km/h */
-    private double direction; /* degree clockwise */
-    private String owner;
-    private String name;
+
+    /* TODO private */
+    public double speed; /* km/h */
+    public double direction; /* degree clockwise */
+    public String owner;
+    public String name;
 
     Vehicle() {
         speed = 0.0;
         direction = 0.0;
         owner = null;
+        name = null;
     }
 
     public void registerName(String name) {

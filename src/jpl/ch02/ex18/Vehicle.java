@@ -1,5 +1,13 @@
-package jpl.ch02.ex13;
+package jpl.ch02.ex18;
 
+enum FixedDirection {
+    LEFT(-10.0),
+    RIGHT(10.0);
+
+    double value;
+    FixedDirection(double value) {this.value = value;}
+
+}
 public class Vehicle {
     private double speed; /* km/h */
     private double direction; /* degree clockwise */
@@ -7,6 +15,9 @@ public class Vehicle {
     private String name;
     private static long nextID = 0;
     private final long vehicleID;
+
+    public final FixedDirection TRUN_LEFT = FixedDirection.LEFT;
+    public final FixedDirection TRUN_RIGHT = FixedDirection.RIGHT;
 
     public Vehicle() {
         speed = 0.0;
@@ -28,9 +39,30 @@ public class Vehicle {
     public void reflectSpeed(double speed) {
         this.speed = speed;
     }
+    /* return true:Accelerated false:Decelerated */
+    public boolean changeSpeed(double speed) {
+        double before = this.speed;
+        reflectSpeed(speed);
+        if(speed >= before) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public void stop() {
+        reflectSpeed(0.0);
+    }
     public void reflectDirection(double direction) {
         this.direction = direction;
     }
+    public void trun(double direction) {
+         reflectDirection(direction);
+    }
+
+    public void turn(FixedDirection fixedDirection) {
+        reflectDirection(fixedDirection.value);
+    }
+
     public String getName() {
         return name;
     }
@@ -69,5 +101,12 @@ public class Vehicle {
         System.out.println("speed(km/h) " + speed + " km/h" );
         System.out.println("direction: " + direction + " degree (clockwise)" );
         System.out.println("vehicleID: " + vehicleID );
+    }
+    public static void main(String[] args) {
+        Vehicle vehicles[] = new Vehicle[args.length];
+        for(int  i = 0; i < args.length; i++ ) {
+            vehicles[i] = new Vehicle(args[i]);
+            System.out.println("owner name: " + vehicles[i].getOwner());
+        }
     }
 }

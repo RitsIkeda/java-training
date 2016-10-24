@@ -1,4 +1,4 @@
-package jpl.ch02.ex13;
+package jpl.ch02.ex15;
 
 public class Vehicle {
     private double speed; /* km/h */
@@ -28,9 +28,23 @@ public class Vehicle {
     public void reflectSpeed(double speed) {
         this.speed = speed;
     }
+    /* return true:Accelerated false:Decelerated */
+    public boolean changeSpeed(double speed) {
+        double before = this.speed;
+        reflectSpeed(speed);
+        if(speed >= before) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public void stop() {
+        reflectSpeed(0.0);
+    }
     public void reflectDirection(double direction) {
         this.direction = direction;
     }
+
     public String getName() {
         return name;
     }

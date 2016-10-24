@@ -14,7 +14,7 @@ public class Vehicle {
         owner = null;
         vehicleID = nextID++;
     }
-    public Vehicle(String oenwer) {
+    public Vehicle(String owner) {
         this();
         registerOwner(owner);
     }
