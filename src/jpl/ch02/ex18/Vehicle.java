@@ -3,7 +3,6 @@ package jpl.ch02.ex18;
 enum FixedDirection {
     LEFT(-10.0),
     RIGHT(10.0);
-
     double value;
     FixedDirection(double value) {this.value = value;}
 
