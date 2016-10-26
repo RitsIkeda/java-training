@@ -1,12 +1,14 @@
 package jpl.ch02.ex10;
 
 public class Vehicle {
-    private double speed; /* km/h */
-    private double direction; /* degree clockwise */
-    private String owner;
-    private String name;
-    private static long nextID = 0;
-    private final long vehicleID;
+
+    /* TODO private */
+    public double speed; /* km/h */
+    public double direction; /* degree clockwise */
+    public String owner;
+    public String name;
+    public static long nextID = 0;
+    public final long vehicleID;
 
     public Vehicle() {
         speed = 0.0;
@@ -53,5 +55,10 @@ public class Vehicle {
         System.out.println("speed(km/h) " + speed + " km/h" );
         System.out.println("direction: " + direction + " degree (clockwise)" );
         System.out.println("vehicleID: " + vehicleID );
+    }
+
+    /* BAD HACK FOR TEST */
+    public static void resetStaticField() {
+        nextID = 0;
     }
 }

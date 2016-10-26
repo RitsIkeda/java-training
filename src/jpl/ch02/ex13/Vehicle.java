@@ -54,7 +54,9 @@ public class Vehicle {
             return nextID - 1;
         }
     }
-
+    public static long getNextID() {
+        return nextID;
+    }
     public String toString() {
         String str = "name:" + name;
          str += " / owner:" + owner;
@@ -69,5 +71,9 @@ public class Vehicle {
         System.out.println("speed(km/h) " + speed + " km/h" );
         System.out.println("direction: " + direction + " degree (clockwise)" );
         System.out.println("vehicleID: " + vehicleID );
+    }
+    /* BAD HACK FOR TEST */
+    public static void resetStaticField() {
+        nextID = 0;
     }
 }
