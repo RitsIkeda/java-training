@@ -62,9 +62,10 @@ class LinkedList {
         int count = 0;
         LinkedList src = this;
         do {
-            LinkedList next = src.callNext();
-            src = next;
-        } while(next != null);
+            count++;
+            if(src.callNext() == null) { break;}
+            src = src.callNext();
+        } while(true);
         return count;
     }
 

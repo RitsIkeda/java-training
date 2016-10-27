@@ -7,7 +7,6 @@ enum FixedDirection {
 
     double value;
     FixedDirection(double value) {this.value = value;}
-
 }
 public class Vehicle {
     private double speed; /* km/h */
@@ -17,8 +16,10 @@ public class Vehicle {
     private static long nextID = 0;
     private final long vehicleID;
 
-    public final FixedDirection TRUN_LEFT = FixedDirection.LEFT;
-    public final FixedDirection TRUN_RIGHT = FixedDirection.RIGHT;
+    public static final FixedDirection TURN_LEFT = FixedDirection.LEFT;
+    public static final FixedDirection TURN_RIGHT = FixedDirection.RIGHT;
+
+    private static final double SAFE_TURN_RANGE = 20.0;
 
     public Vehicle() {
         speed = 0.0;
@@ -56,14 +57,18 @@ public class Vehicle {
     public void reflectDirection(double direction) {
         this.direction = direction;
     }
-    public void trun(double direction) {
+    /* true:safe false:warning */
+    public boolean turn(double direction) {
          reflectDirection(direction);
+         if(Math.abs(direction) <= SAFE_TURN_RANGE) {
+             return true;
+         } else {
+             return false;
+         }
     }
-
     public void turn(FixedDirection fixedDirection) {
         reflectDirection(fixedDirection.value);
     }
-
     public String getName() {
         return name;
     }
@@ -87,6 +92,9 @@ public class Vehicle {
             return nextID - 1;
         }
     }
+    public static long getNextID() {
+        return nextID;
+    }
 
     public String toString() {
         String str = "name:" + name;
@@ -102,5 +110,9 @@ public class Vehicle {
         System.out.println("speed(km/h) " + speed + " km/h" );
         System.out.println("direction: " + direction + " degree (clockwise)" );
         System.out.println("vehicleID: " + vehicleID );
+    }
+    /* BAD HACK FOR TEST */
+    public static void resetStaticField() {
+        nextID = 0;
     }
 }

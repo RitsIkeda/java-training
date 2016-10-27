@@ -85,6 +85,9 @@ public class Vehicle {
             return nextID - 1;
         }
     }
+    public static long getNextID() {
+        return nextID;
+    }
 
     public String toString() {
         String str = "name:" + name;
