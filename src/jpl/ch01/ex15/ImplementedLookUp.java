@@ -9,21 +9,24 @@ interface LookUp {
     boolean remove(String name);
 }
 
-class ImplementedLookUp implements LookUp {
-    private String[] names;
-    private Object[] values;
+public class ImplementedLookUp implements LookUp {
+    private static final int ARRAY_SIZE = 1000;
+
+    private String[] names = new String[ARRAY_SIZE];
+    private Object[] values = new Object[ARRAY_SIZE];
 
     public Object find(String name) {
-        for(int i = 0; i< names.length; i++) {
-            if(names[i].equals(name)) {
+        for(int i = 0; i < names.length; i++) {
+            if(names[i] != null && names[i].equals(name)) {
                 return values[i];
             }
         }
         return null;
     }
     public boolean add(String name, Object value) {
-        for(int i = 0; i< names.length; i++) {
-            if(values[i] == null) {
+        for(int i = 0; i < names.length; i++) {
+            if(names[i] == null) {
+                names[i] = name;
                 values[i] = value;
                 return true;
             }
@@ -32,7 +35,7 @@ class ImplementedLookUp implements LookUp {
     }
 
     public boolean remove(String name) {
-        for(int i = 0; i< names.length; i++) {
+        for(int i = 0; i < names.length; i++) {
             if(names[i].equals(name)) {
                 names[i] = null;
                 values[i] = null;
