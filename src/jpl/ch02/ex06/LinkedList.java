@@ -2,7 +2,7 @@ package jpl.ch02.ex06;
 
 import jpl.ch02.ex05.Vehicle;
 
-class LinkedList {
+public class LinkedList {
     private LinkedList next;
     private Object data;
 

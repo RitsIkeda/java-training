@@ -1,6 +1,6 @@
 package jpl.ch02.ex03;
 
-class Vehicle {
+public class Vehicle {
 
     /* TODO private */
     public double speed; /* km/h */

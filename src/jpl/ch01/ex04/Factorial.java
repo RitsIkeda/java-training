@@ -1,6 +1,6 @@
 package jpl.ch01.ex04;
 
-class Factorial {
+public class Factorial {
     public static void main(String[] args) {
 
         System.out.println("**************************************");
@@ -13,7 +13,7 @@ class Factorial {
         System.out.println("**************************************");
 
     }
-    
+
     /* 引数の階乗を返す。引数が1未満の時は1を返す */
     public static long calcFactorial(int i) {
         if(i <= 0) {

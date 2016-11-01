@@ -1,6 +1,6 @@
 package jpl.ch02.ex16;
 
-class LinkedList {
+public class LinkedList {
     private LinkedList next;
     private Object data;
 
