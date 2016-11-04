@@ -32,4 +32,18 @@ public class ImplementedLookUpTest {
         table.remove("name50");
         assertNull(table.find("name50"));
     }
+    @Test
+    public void test4 () {
+        ImplementedLookUp table = new ImplementedLookUp();
+        for(int i = 0; i < 100; i += 2 ) {
+            table.add("name" + String.valueOf(i),i);
+        }
+        for(int i = 0; i < 100; i += 4 ) {
+            table.remove("name" + String.valueOf(i));
+        }
+        for(int i = 0; i < 100; i += 4 ) {
+            assertNull( table.find("name" + String.valueOf(i)));
+            assertEquals(i+2,table.find("name" +String.valueOf(i+2)));
+        }
+    }
 }

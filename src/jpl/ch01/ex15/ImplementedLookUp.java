@@ -36,7 +36,7 @@ public class ImplementedLookUp implements LookUp {
 
     public boolean remove(String name) {
         for(int i = 0; i < names.length; i++) {
-            if(names[i].equals(name)) {
+            if(names[i] != null && names[i].equals(name)) {
                 names[i] = null;
                 values[i] = null;
                 return true;
