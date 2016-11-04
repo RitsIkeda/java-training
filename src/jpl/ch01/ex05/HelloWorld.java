@@ -1,6 +1,6 @@
 package jpl.ch01.ex05;
 
-public class HelloWold {
+public class HelloWorld {
 
     private static final String message = "Hello World";
 
