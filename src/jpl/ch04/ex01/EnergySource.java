@@ -1,12 +1,12 @@
-package jpl.ch03.ex06;
+package jpl.ch04.ex01;
 
-abstract class EnergySource {
+interface EnergySource {
     abstract boolean empty();
     abstract void fillUp();
     abstract double getSource();
 }
 
-class Battery extends EnergySource  {
+class Battery implements EnergySource  {
     private double battery;
     public boolean empty() {
         if(battery <= 0.0) {
@@ -24,7 +24,7 @@ class Battery extends EnergySource  {
 
 }
 
-class GasTank extends EnergySource  {
+class GasTank implements EnergySource  {
     protected int gas;
     protected final int capacity;
 

@@ -1,6 +1,9 @@
-package jpl.ch03.ex06;
+package jpl.ch03.ex08;
 
-abstract class EnergySource {
+abstract class EnergySource implements Cloneable {
+    public EnergySource clone() throws CloneNotSupportedException {
+        return (EnergySource) super.clone();
+    }
     abstract boolean empty();
     abstract void fillUp();
     abstract double getSource();
@@ -21,10 +24,9 @@ class Battery extends EnergySource  {
       public double getSource() {
           return battery;
       }
-
 }
 
-class GasTank extends EnergySource  {
+class GasTank extends EnergySource {
     protected int gas;
     protected final int capacity;
 
@@ -33,7 +35,7 @@ class GasTank extends EnergySource  {
     }
 
     public boolean empty() {
-        if(gas == 0) {
+        if(gas == 0.0) {
             return true;
         } else {
             return false;
