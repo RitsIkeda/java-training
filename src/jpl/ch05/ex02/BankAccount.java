@@ -14,7 +14,7 @@ public class BankAccount {
     }
     /* Actionをメンバとしてもつ BankAccount専用のヒストリークラスであるため、
       BankAccountのネストしたクラスで提供する。
-      1つのBankAccountのインスタンスにつき、1つのHisotyをもつためstaticとする。
+      エンクロージングクラスにアクセスすることがないため、staticとする。
       */
      public static class History  {
          LinkedList <Action> actions = new LinkedList <Action>();
