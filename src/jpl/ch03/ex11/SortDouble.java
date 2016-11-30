@@ -59,7 +59,7 @@ abstract class SortDouble {
         doSort();
         return getMetrics();
     }
-    protected final double[] getValues() {
+    public final double[] getValues() {
         return values.clone();
     }
     public final SortMetrics getMetrics() {

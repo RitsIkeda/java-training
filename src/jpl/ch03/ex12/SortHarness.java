@@ -4,11 +4,7 @@ abstract class SortHarness {
     private Object values[];
     protected final int compare(int i, int j) {
         curMetrics.incrementCompareCnt();
-        if(values[i].equals( values[j] )) {
-            return 0;
-        } else {
-            return (values[i].hashCode() < values[j].hashCode() ? -1 : 1);
-        }
+        return values[i].hashCode() - values[j].hashCode();
     }
 
     private final SortMetrics curMetrics = new SortMetrics();
