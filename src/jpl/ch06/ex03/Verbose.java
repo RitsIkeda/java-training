@@ -1,10 +1,9 @@
 package jpl.ch06.ex03;
 
-interface Vehibose {
+interface Verbose {
     enum Level {
         SILENT, TESRSE, NORMAL, VERBOSE;
     }
-    void setVehibosity(Level level);
-    Level getVhibosity();
-
+    void setVerbosity(Level level);
+    Level getVerbosity();
 }
