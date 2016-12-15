@@ -1,0 +1,22 @@
+■ 3 << 2L - 1
+    「6」(int)
+■(3L << 2) - 1
+    「11」(long)
+■10 < 12 == 6 > 17
+    「false」(bool)
+■10 << 12 == 6 >> 17
+    「true」(bool)
+■13.5e-1 % Float.POSITIVE_INFINITY
+    「1」(int)
+■Float.POSITIVE_INFINITY + Double.NEGATIVE_INFINITY
+    「Nan」(double)
+■Double.POSITIVE_INFINITY - Float.NEGATIVE_INFINITY
+    「Double.POSITIVE_INFINITY」(double)
+■0.0 / -0.0 == -0.0 / 0.0
+    「false」(bool)
+■Integar.MAX_VALUE + Integar_MIN_VALUE
+    「-1」(int)
+■Long.MAX_VALUE + 5
+    「0x1000 00005」(long)
+■(short) 5 * (byte) 10
+    「50」(int)
