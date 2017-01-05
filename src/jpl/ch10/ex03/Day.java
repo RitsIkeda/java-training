@@ -1,4 +1,3 @@
-package jpl.ch06.ex01;
+package jpl.ch10.ex03;
 
 enum Day {SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, STATUERDAY}
-enum Traffic{RED, YELLOW, GREEN}

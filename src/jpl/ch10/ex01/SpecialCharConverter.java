@@ -26,6 +26,12 @@ public class SpecialCharConverter {
                 } else {
                     result += '\b';
                 }
+            } else if ( charArray[i] == 0x000D ) {
+                if(result == null) {
+                    result = "\r";
+                } else {
+                    result += '\r';
+                }
             } else if ( charArray[i] == 0x000C ) {
                 if(result == null) {
                     result = "\f";
