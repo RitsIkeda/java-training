@@ -1,41 +1,25 @@
-package jpl.ch03.ex10;
+package jpl.ch11.ex01;
 
-public class LinkedList implements Cloneable {
-    private LinkedList next;
-    private Object data;
-
-    public LinkedList clone()  {
-        try {
-            LinkedList dst = (LinkedList) super.clone();
-            if( next != null) {
-                dst.next = (LinkedList) next.clone();
-            }
-            return dst;
-        } catch (CloneNotSupportedException e) {
-            throw new InternalError(e.toString());
-        }
-    }
-
+public class LinkedList<E> {
+    private LinkedList<E> next;
+    private E data;
 
     LinkedList() {
         this.data = null;
         this.next = null;
     }
-    LinkedList(Object data) {
+    LinkedList(E data) {
         this();
         this.data = data;
     }
-    LinkedList(Object data, LinkedList next) {
+    LinkedList(E data, LinkedList<E> next) {
         this();
         this.data = data;
         this.next = next;
     }
 
-    /* 下記コンストラクタはコピーコンストラクタとシグネチャが一致するため、
-        定義するべきではない
-    LinkedList(LinkedList next) */
 
-    public boolean registerNextList(LinkedList next) {
+    public boolean registerNextList(LinkedList<E> next) {
         if(this.next == null) {
             this.next = next;
             return true;
@@ -43,17 +27,17 @@ public class LinkedList implements Cloneable {
             return false;
         }
     }
-    public void forceNextList(LinkedList next) {
+    public void forceNextList(LinkedList<E> next) {
         this.next = next;
     }
-    public void setData(Object data) {
+    public void setData(E data) {
         this.data = data;
     }
 
-    public Object getData() {
+    public E getData() {
         return this.data;
     }
-    public LinkedList callNext() {
+    public LinkedList<E> callNext() {
         return this.next;
     }
 
@@ -73,7 +57,7 @@ public class LinkedList implements Cloneable {
         no able to count before Data Number. */
     public int countAllNextList() {
         int count = 0;
-        LinkedList src = this;
+        LinkedList<E> src = this;
         do {
             count++;
             if(src.callNext() == null) { break;}

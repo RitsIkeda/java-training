@@ -10,6 +10,8 @@ public class Garage implements Cloneable {
     public Garage clone()  {
         try {
             Garage dst = (Garage) super.clone();
+            dst.vehicles = vehicles.clone();
+            dst.copy(this);
             return dst;
         } catch (CloneNotSupportedException e) {
             throw new InternalError(e.toString());
