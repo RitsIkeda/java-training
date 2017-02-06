@@ -1,4 +1,4 @@
-package jpl.ch12.ex05;
+package jpl.ch13.ex05;
 
 public class IntStrSeparator {
 

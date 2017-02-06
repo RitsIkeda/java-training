@@ -1,4 +1,4 @@
-package jpl.ch12.ex013;
+package jpl.ch13.ex03;
 
 public class DelimitedStrArray {
     public String[] delimitedStrArray(String from, char start, char end, int limit) {
