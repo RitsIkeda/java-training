@@ -1,0 +1,15 @@
+
+
+■コマンド[Babble false 2 Did DidNot]で評価した結果
+  「Did Did DidNot DidNot」 (改行文字はスペースで表現している。以下、同様）
+  「DidNot DidNot Did Did」
+  の2パターンのみの出力であった。
+ 
+
+■コマンド[Babble true 2 Did DidNot]で評価した結果
+	「Did Did DidNot DidNot」
+	「Did DidNot Did DidNot」
+	「Did DidNot DidNot Did 」
+	「DidNot Did DidNot Did 」
+	
+	の4パターンの出力が確認できた。
