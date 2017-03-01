@@ -62,9 +62,78 @@ public class ClockProperty extends Frame {
 		addTextSizeComponents();
 		addTextColorComponents();
 		addBackColorComponents();
+		addTemplate();
 		addSelectButtons();
 	}
 
+	private void addTemplate() {
+		addComponent(new Label("Template"), 0, 5, 1, 1);
+
+		Choice choice = new Choice();
+		choice.addItem("Simple");
+		choice.addItem("Spring");
+		choice.addItem("Summer");
+		choice.addItem("Autumn");
+		choice.addItem("Winter");
+		choice.addItem("Pop");
+		choice.addItem("Rock");
+		choice.addItem("Dark");
+		choice.addItem("Fashionable");
+		choice.addItem("Funny");
+		choice.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent ev) {
+				if (((String) ev.getItem()).equals("Simple")) {
+					clockData.fontName = "Arial";
+					clockData.fontColor = RichColors.toRealColor("Black");
+					clockData.backColor = RichColors.toRealColor("White");
+				} else if (((String) ev.getItem()).equals("Spring")) {
+					clockData.fontName = "Monotype Corsiva";
+					clockData.fontColor = RichColors.toRealColor("Fuchsia");
+					clockData.backColor = RichColors.toRealColor("Linen");
+				} else if (((String) ev.getItem()).equals("Summer")) {
+					clockData.fontName = "Tw cen mt condensed extra bold";
+					clockData.fontColor = RichColors.toRealColor("OrangeRed");
+					clockData.backColor = RichColors.toRealColor("Blue");
+				} else if (((String) ev.getItem()).equals("Autumn")) {
+					clockData.fontName = "Algerian";
+					clockData.fontColor = RichColors.toRealColor("DarkOrange");
+					clockData.backColor = RichColors.toRealColor("Brown");
+				} else if (((String) ev.getItem()).equals("Winter")) {
+					clockData.fontName = "Californian FB";
+					clockData.fontColor = RichColors.toRealColor("Blue");
+					clockData.backColor = RichColors.toRealColor("AliceBlue");
+				}else if (((String) ev.getItem()).equals("Pop")) {
+					clockData.fontName = "Berlin Sans FB Demi";
+					clockData.fontColor = RichColors.toRealColor("DarkOrange");
+					clockData.backColor = RichColors.toRealColor("LightCyan");
+				} else if (((String) ev.getItem()).equals("Rock")) {
+					clockData.fontName = "Brush Script MT";
+					clockData.fontColor = RichColors.toRealColor("Black");
+					clockData.backColor = RichColors.toRealColor("Red");
+				} else if (((String) ev.getItem()).equals("Dark")) {
+					clockData.fontName = "Arabic Typesetting";
+					clockData.fontColor = RichColors.toRealColor("White");
+					clockData.backColor = RichColors.toRealColor("Black");
+				} else if (((String) ev.getItem()).equals("Fashionable")) {
+					clockData.fontName = "Vladimir Script";
+					clockData.fontColor = RichColors.toRealColor("DarkRed");
+					clockData.backColor = RichColors.toRealColor("Crimson");
+				} else if (((String) ev.getItem()).equals("Funny")) {
+					clockData.fontName = "Curlz MT";
+					clockData.fontColor = RichColors.toRealColor("WhiteSmoke");
+					clockData.backColor = RichColors.toRealColor("DarkOrchid");
+				}
+				clock.setClockData(clockData, false);
+			}
+
+		});
+
+		addComponent(choice, 1, 5, 3, 1);
+
+
+
+	}
 	private void addSelectButtons() {
 
 		Button ok = new Button("OK");
@@ -88,8 +157,8 @@ public class ClockProperty extends Frame {
 
 		});
 
-		addComponent(ok, 4, 5, 1, 1);
-		addComponent(cancel, 5, 5, 1, 1);
+		addComponent(ok, 4, 6, 1, 1);
+		addComponent(cancel, 5, 6, 1, 1);
 	}
 
 	private void addFontComponents() {
@@ -138,7 +207,7 @@ public class ClockProperty extends Frame {
 				} else if (((String) ev.getItem()).equals("Large")) {
 					clockData.ratio = 3.0;
 				} else if (((String) ev.getItem()).equals("Very Large")) {
-					clockData.ratio = 3.5;
+					clockData.ratio = 4.0;
 				}
 				clock.setClockData(clockData, false);
 			}
