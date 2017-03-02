@@ -19,6 +19,7 @@ public class OutThreadStructure {
         } catch(InterruptedException e) {
             System.out.println("InterruptedException");
         }
+        str = "┗" +str;
         for(int i = 0; i < depth; i++) {
             str = "\t" + str;
         }
