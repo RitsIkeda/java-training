@@ -4,7 +4,7 @@ public class IntStrSeparator {
 
     public static String IntStrSeparator(String target, int separeteNum) {
         String result = "";
-        if(target.length() <= separeteNum) {
+        if(target.length() <= separeteNum || separeteNum == 0) {
             return target;
         }
 
@@ -24,12 +24,11 @@ public class IntStrSeparator {
     }
 
     public static void main(String args[]) {
+        System.out.println(IntStrSeparator("1234",0));
         System.out.println(IntStrSeparator("1234",1));
         System.out.println(IntStrSeparator("1234",2));
         System.out.println(IntStrSeparator("1234",3));
         System.out.println(IntStrSeparator("1234",4));
-        //System.out.println(IntStrSeparator("1111",1));
-        //System.out.println(IntStrSeparator("1111",0));
     }
 
 }
