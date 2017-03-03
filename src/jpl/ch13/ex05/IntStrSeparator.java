@@ -11,12 +11,24 @@ public class IntStrSeparator {
         int spetatePos = (target.length() % separeteNum);
         if( spetatePos == 0) { spetatePos = separeteNum; }
 
-        while(spetatePos < target.length()) {
-            result = target.substring(spetatePos, spetatePos + separeteNum);
-            target += ",";
+        result += target.substring(0,spetatePos) + ",";
+        while(true) {
+            result += target.substring(spetatePos, spetatePos + separeteNum );
+            if( target.length() <= spetatePos + separeteNum) {
+                break;
+            }
+            result += ",";
             spetatePos += separeteNum;
         }
         return result;
+    }
+
+    public static void main(String args[]) {
+        System.out.println(IntStrSeparator("123"));
+        System.out.println(IntStrSeparator("1234"));
+        System.out.println(IntStrSeparator("12345"));
+        System.out.println(IntStrSeparator("123456"));
+        System.out.println(IntStrSeparator("1234567"));
     }
 
 }

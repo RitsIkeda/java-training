@@ -7,15 +7,29 @@ public class IntStrSeparator {
         if(target.length() <= separeteNum) {
             return target;
         }
+
         int spetatePos = (target.length() % separeteNum);
         if( spetatePos == 0) { spetatePos = separeteNum; }
 
-        while(spetatePos < target.length()) {
-            result = target.substring(spetatePos, spetatePos + separeteNum);
-            target += ",";
+        result += target.substring(0,spetatePos) + ",";
+        while(true) {
+            result += target.substring(spetatePos, spetatePos + separeteNum );
+            if( target.length() <= spetatePos + separeteNum) {
+                break;
+            }
+            result += ",";
             spetatePos += separeteNum;
         }
         return result;
+    }
+
+    public static void main(String args[]) {
+        System.out.println(IntStrSeparator("1234",1));
+        System.out.println(IntStrSeparator("1234",2));
+        System.out.println(IntStrSeparator("1234",3));
+        System.out.println(IntStrSeparator("1234",4));
+        //System.out.println(IntStrSeparator("1111",1));
+        //System.out.println(IntStrSeparator("1111",0));
     }
 
 }
