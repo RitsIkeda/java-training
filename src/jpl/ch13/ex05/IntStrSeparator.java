@@ -21,6 +21,16 @@ public class IntStrSeparator {
             spetatePos += separeteNum;
         }
         return result;
+
+        /* teacher's ansewer */
+        /*
+        StringBuilder sb = new StringBuilder(source);
+
+        for(int i = source.length() - separeteNum; i > 0; i -= separeteNum) {
+            sb.insert(i,',');
+        }
+        return sb.toString();
+        */
     }
 
     public static void main(String args[]) {
