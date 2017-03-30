@@ -7,10 +7,10 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,26 +22,17 @@ public class MethodDialog extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField instanceBox;
 	private JTextField argmentsBox;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
+	private JTextField retTypeBox;
+	private JTextField retValueBox;
+	private JTextField exeptionBox;
 
 	private Interpret interpret;
 	private Method method;
 	private String instanceName;
 	private JTextField methodBox;
-	private JTextField textField_1;
-	private JTextField textField;
-	private JTextField textField_2;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_8;
-	private JTextField textField_9;
-	private JTextField textField_10;
-	private JTextField textField_11;
-	private JTextField textField_12;
 
 	private JTextField[] typeBoxes = new JTextField[10];
+	private JTextField[] argBoxes = new JTextField[10];
 	private JLabel label_1;
 	private JLabel label_2;
 	private JLabel label_3;
@@ -51,7 +42,6 @@ public class MethodDialog extends JDialog {
 	private JLabel label_7;
 	private JLabel label_8;
 	private JLabel label_9;
-	private JLabel lblUseCreatedInstances;
 
 	/**
 	 * Create the dialog.
@@ -81,36 +71,36 @@ public class MethodDialog extends JDialog {
 		lblRtrunType.setBounds(12, 447, 81, 13);
 		contentPanel.add(lblRtrunType);
 
-		textField_3 = new JTextField();
-		textField_3.setBounds(87, 444, 146, 19);
-		textField_3.setColumns(10);
-		contentPanel.add(textField_3);
+		retTypeBox = new JTextField(method.getReturnType().getName());
+		retTypeBox.setBounds(87, 444, 146, 19);
+		retTypeBox.setColumns(10);
+		contentPanel.add(retTypeBox);
 
 		JLabel lblRetunValue = new JLabel("Return Value");
 		lblRetunValue.setBounds(281, 447, 81, 13);
 		contentPanel.add(lblRetunValue);
 
-		textField_4 = new JTextField();
-		textField_4.setBounds(360, 444, 150, 19);
-		textField_4.setColumns(10);
-		contentPanel.add(textField_4);
+		retValueBox = new JTextField();
+		retValueBox.setBounds(360, 444, 150, 19);
+		retValueBox.setColumns(10);
+		contentPanel.add(retValueBox);
 
 		JLabel lblExeption = new JLabel("Exeption");
 		lblExeption.setBounds(12, 470, 81, 13);
 		contentPanel.add(lblExeption);
 
-		textField_5 = new JTextField();
-		textField_5.setBounds(12, 495, 504, 19);
-		textField_5.setColumns(10);
-		contentPanel.add(textField_5);
+		exeptionBox = new JTextField();
+		exeptionBox.setBounds(12, 495, 504, 19);
+		exeptionBox.setColumns(10);
+		contentPanel.add(exeptionBox);
 
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 56, 516, 381);
 		contentPanel.add(panel);
 		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[] { 26, 129, 233, 103, 0 };
+		gbl_panel.columnWidths = new int[] { 26, 129, 233, 0 };
 		gbl_panel.rowHeights = new int[] { 34, 31, 36, 34, 35, 34, 35, 38, 34, 35, 29, 0 };
-		gbl_panel.columnWeights = new double[] { 0.0, 1.0, 1.0, 1.0, Double.MIN_VALUE };
+		gbl_panel.columnWeights = new double[] { 0.0, 1.0, 1.0, Double.MIN_VALUE };
 		gbl_panel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		panel.setLayout(gbl_panel);
 
@@ -123,17 +113,10 @@ public class MethodDialog extends JDialog {
 
 		JLabel lblArgmentspleaseSeparate = new JLabel("Argments Value");
 		GridBagConstraints gbc_lblArgmentspleaseSeparate = new GridBagConstraints();
-		gbc_lblArgmentspleaseSeparate.insets = new Insets(0, 0, 5, 5);
+		gbc_lblArgmentspleaseSeparate.insets = new Insets(0, 0, 5, 0);
 		gbc_lblArgmentspleaseSeparate.gridx = 2;
 		gbc_lblArgmentspleaseSeparate.gridy = 0;
 		panel.add(lblArgmentspleaseSeparate, gbc_lblArgmentspleaseSeparate);
-
-		lblUseCreatedInstances = new JLabel("Use instances");
-		GridBagConstraints gbc_lblUseCreatedInstances = new GridBagConstraints();
-		gbc_lblUseCreatedInstances.insets = new Insets(0, 0, 5, 0);
-		gbc_lblUseCreatedInstances.gridx = 3;
-		gbc_lblUseCreatedInstances.gridy = 0;
-		panel.add(lblUseCreatedInstances, gbc_lblUseCreatedInstances);
 
 		JLabel label = new JLabel("0");
 		GridBagConstraints gbc_label = new GridBagConstraints();
@@ -153,21 +136,14 @@ public class MethodDialog extends JDialog {
 		gbc_typeBox1.gridy = 1;
 		panel.add(typeBoxes[0], gbc_typeBox1);
 
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_1.fill = GridBagConstraints.BOTH;
-		gbc_textField_1.gridx = 2;
-		gbc_textField_1.gridy = 1;
-		panel.add(textField_1, gbc_textField_1);
-
-		JCheckBox chckbxNewCheckBox = new JCheckBox("");
-		GridBagConstraints gbc_chckbxNewCheckBox = new GridBagConstraints();
-		gbc_chckbxNewCheckBox.insets = new Insets(0, 0, 5, 0);
-		gbc_chckbxNewCheckBox.gridx = 3;
-		gbc_chckbxNewCheckBox.gridy = 1;
-		panel.add(chckbxNewCheckBox, gbc_chckbxNewCheckBox);
+		argBoxes[0] = new JTextField();
+		argBoxes[0].setColumns(10);
+		GridBagConstraints gbc_argBox0 = new GridBagConstraints();
+		gbc_argBox0.insets = new Insets(0, 0, 5, 0);
+		gbc_argBox0.fill = GridBagConstraints.BOTH;
+		gbc_argBox0.gridx = 2;
+		gbc_argBox0.gridy = 1;
+		panel.add(argBoxes[0], gbc_argBox0);
 
 		label_1 = new JLabel("1");
 		GridBagConstraints gbc_label_1 = new GridBagConstraints();
@@ -187,21 +163,14 @@ public class MethodDialog extends JDialog {
 		gbc_typeBox2.gridy = 2;
 		panel.add(typeBoxes[1], gbc_typeBox2);
 
-		textField = new JTextField();
-		textField.setColumns(10);
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 2;
-		gbc_textField.gridy = 2;
-		panel.add(textField, gbc_textField);
-
-		JCheckBox checkBox = new JCheckBox("");
-		GridBagConstraints gbc_checkBox = new GridBagConstraints();
-		gbc_checkBox.insets = new Insets(0, 0, 5, 0);
-		gbc_checkBox.gridx = 3;
-		gbc_checkBox.gridy = 2;
-		panel.add(checkBox, gbc_checkBox);
+		argBoxes[1] = new JTextField();
+		argBoxes[1].setColumns(10);
+		GridBagConstraints gbc_argBox1 = new GridBagConstraints();
+		gbc_argBox1.insets = new Insets(0, 0, 5, 0);
+		gbc_argBox1.fill = GridBagConstraints.HORIZONTAL;
+		gbc_argBox1.gridx = 2;
+		gbc_argBox1.gridy = 2;
+		panel.add(argBoxes[1], gbc_argBox1);
 
 		label_2 = new JLabel("2");
 		GridBagConstraints gbc_label_2 = new GridBagConstraints();
@@ -221,21 +190,14 @@ public class MethodDialog extends JDialog {
 		gbc_typeBox3.gridy = 3;
 		panel.add(typeBoxes[2], gbc_typeBox3);
 
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
-		gbc_textField_2.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_2.gridx = 2;
-		gbc_textField_2.gridy = 3;
-		panel.add(textField_2, gbc_textField_2);
-
-		JCheckBox checkBox_1 = new JCheckBox("");
-		GridBagConstraints gbc_checkBox_1 = new GridBagConstraints();
-		gbc_checkBox_1.insets = new Insets(0, 0, 5, 0);
-		gbc_checkBox_1.gridx = 3;
-		gbc_checkBox_1.gridy = 3;
-		panel.add(checkBox_1, gbc_checkBox_1);
+		argBoxes[2] = new JTextField();
+		argBoxes[2].setColumns(10);
+		GridBagConstraints gbc_argBox2 = new GridBagConstraints();
+		gbc_argBox2.insets = new Insets(0, 0, 5, 0);
+		gbc_argBox2.fill = GridBagConstraints.HORIZONTAL;
+		gbc_argBox2.gridx = 2;
+		gbc_argBox2.gridy = 3;
+		panel.add(argBoxes[2], gbc_argBox2);
 
 		label_3 = new JLabel("3");
 		GridBagConstraints gbc_label_3 = new GridBagConstraints();
@@ -255,21 +217,14 @@ public class MethodDialog extends JDialog {
 		gbc_typeBox4.gridy = 4;
 		panel.add(typeBoxes[3], gbc_typeBox4);
 
-		textField_6 = new JTextField();
-		textField_6.setColumns(10);
-		GridBagConstraints gbc_textField_6 = new GridBagConstraints();
-		gbc_textField_6.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_6.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_6.gridx = 2;
-		gbc_textField_6.gridy = 4;
-		panel.add(textField_6, gbc_textField_6);
-
-		JCheckBox checkBox_2 = new JCheckBox("");
-		GridBagConstraints gbc_checkBox_2 = new GridBagConstraints();
-		gbc_checkBox_2.insets = new Insets(0, 0, 5, 0);
-		gbc_checkBox_2.gridx = 3;
-		gbc_checkBox_2.gridy = 4;
-		panel.add(checkBox_2, gbc_checkBox_2);
+		argBoxes[3] = new JTextField();
+		argBoxes[3].setColumns(10);
+		GridBagConstraints gbc_argBox3 = new GridBagConstraints();
+		gbc_argBox3.insets = new Insets(0, 0, 5, 0);
+		gbc_argBox3.fill = GridBagConstraints.HORIZONTAL;
+		gbc_argBox3.gridx = 2;
+		gbc_argBox3.gridy = 4;
+		panel.add(argBoxes[3], gbc_argBox3);
 
 		label_4 = new JLabel("4");
 		GridBagConstraints gbc_label_4 = new GridBagConstraints();
@@ -289,21 +244,14 @@ public class MethodDialog extends JDialog {
 		gbc_typeBox5.gridy = 5;
 		panel.add(typeBoxes[4], gbc_typeBox5);
 
-		textField_7 = new JTextField();
-		textField_7.setColumns(10);
-		GridBagConstraints gbc_textField_7 = new GridBagConstraints();
-		gbc_textField_7.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_7.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_7.gridx = 2;
-		gbc_textField_7.gridy = 5;
-		panel.add(textField_7, gbc_textField_7);
-
-		JCheckBox checkBox_3 = new JCheckBox("");
-		GridBagConstraints gbc_checkBox_3 = new GridBagConstraints();
-		gbc_checkBox_3.insets = new Insets(0, 0, 5, 0);
-		gbc_checkBox_3.gridx = 3;
-		gbc_checkBox_3.gridy = 5;
-		panel.add(checkBox_3, gbc_checkBox_3);
+		argBoxes[4] = new JTextField();
+		argBoxes[4].setColumns(10);
+		GridBagConstraints gbc_argBox4 = new GridBagConstraints();
+		gbc_argBox4.insets = new Insets(0, 0, 5, 0);
+		gbc_argBox4.fill = GridBagConstraints.HORIZONTAL;
+		gbc_argBox4.gridx = 2;
+		gbc_argBox4.gridy = 5;
+		panel.add(argBoxes[4], gbc_argBox4);
 
 		label_5 = new JLabel("5");
 		GridBagConstraints gbc_label_5 = new GridBagConstraints();
@@ -323,21 +271,14 @@ public class MethodDialog extends JDialog {
 		gbc_typeBox6.gridy = 6;
 		panel.add(typeBoxes[5], gbc_typeBox6);
 
-		textField_8 = new JTextField();
-		textField_8.setColumns(10);
-		GridBagConstraints gbc_textField_8 = new GridBagConstraints();
-		gbc_textField_8.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_8.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_8.gridx = 2;
-		gbc_textField_8.gridy = 6;
-		panel.add(textField_8, gbc_textField_8);
-
-		JCheckBox checkBox_4 = new JCheckBox("");
-		GridBagConstraints gbc_checkBox_4 = new GridBagConstraints();
-		gbc_checkBox_4.insets = new Insets(0, 0, 5, 0);
-		gbc_checkBox_4.gridx = 3;
-		gbc_checkBox_4.gridy = 6;
-		panel.add(checkBox_4, gbc_checkBox_4);
+		argBoxes[5] = new JTextField();
+		argBoxes[5].setColumns(10);
+		GridBagConstraints gbc_argBox5 = new GridBagConstraints();
+		gbc_argBox5.insets = new Insets(0, 0, 5, 0);
+		gbc_argBox5.fill = GridBagConstraints.HORIZONTAL;
+		gbc_argBox5.gridx = 2;
+		gbc_argBox5.gridy = 6;
+		panel.add(argBoxes[5], gbc_argBox5);
 
 		label_6 = new JLabel("6");
 		GridBagConstraints gbc_label_6 = new GridBagConstraints();
@@ -357,21 +298,14 @@ public class MethodDialog extends JDialog {
 		gbc_typeBox7.gridy = 7;
 		panel.add(typeBoxes[6], gbc_typeBox7);
 
-		textField_9 = new JTextField();
-		textField_9.setColumns(10);
-		GridBagConstraints gbc_textField_9 = new GridBagConstraints();
-		gbc_textField_9.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_9.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_9.gridx = 2;
-		gbc_textField_9.gridy = 7;
-		panel.add(textField_9, gbc_textField_9);
-
-		JCheckBox checkBox_5 = new JCheckBox("");
-		GridBagConstraints gbc_checkBox_5 = new GridBagConstraints();
-		gbc_checkBox_5.insets = new Insets(0, 0, 5, 0);
-		gbc_checkBox_5.gridx = 3;
-		gbc_checkBox_5.gridy = 7;
-		panel.add(checkBox_5, gbc_checkBox_5);
+		argBoxes[6] = new JTextField();
+		argBoxes[6].setColumns(10);
+		GridBagConstraints gbc_argBox6 = new GridBagConstraints();
+		gbc_argBox6.insets = new Insets(0, 0, 5, 0);
+		gbc_argBox6.fill = GridBagConstraints.HORIZONTAL;
+		gbc_argBox6.gridx = 2;
+		gbc_argBox6.gridy = 7;
+		panel.add(argBoxes[6], gbc_argBox6);
 
 		label_7 = new JLabel("7");
 		GridBagConstraints gbc_label_7 = new GridBagConstraints();
@@ -391,21 +325,14 @@ public class MethodDialog extends JDialog {
 		gbc_typeBox8.gridy = 8;
 		panel.add(typeBoxes[7], gbc_typeBox8);
 
-		textField_10 = new JTextField();
-		textField_10.setColumns(10);
-		GridBagConstraints gbc_textField_10 = new GridBagConstraints();
-		gbc_textField_10.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_10.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_10.gridx = 2;
-		gbc_textField_10.gridy = 8;
-		panel.add(textField_10, gbc_textField_10);
-
-		JCheckBox checkBox_6 = new JCheckBox("");
-		GridBagConstraints gbc_checkBox_6 = new GridBagConstraints();
-		gbc_checkBox_6.insets = new Insets(0, 0, 5, 0);
-		gbc_checkBox_6.gridx = 3;
-		gbc_checkBox_6.gridy = 8;
-		panel.add(checkBox_6, gbc_checkBox_6);
+		argBoxes[7] = new JTextField();
+		argBoxes[7].setColumns(10);
+		GridBagConstraints gbc_argBox7 = new GridBagConstraints();
+		gbc_argBox7.insets = new Insets(0, 0, 5, 0);
+		gbc_argBox7.fill = GridBagConstraints.HORIZONTAL;
+		gbc_argBox7.gridx = 2;
+		gbc_argBox7.gridy = 8;
+		panel.add(argBoxes[7], gbc_argBox7);
 
 		label_8 = new JLabel("8");
 		GridBagConstraints gbc_label_8 = new GridBagConstraints();
@@ -425,21 +352,14 @@ public class MethodDialog extends JDialog {
 		gbc_typeBox9.gridy = 9;
 		panel.add(typeBoxes[8], gbc_typeBox9);
 
-		textField_11 = new JTextField();
-		textField_11.setColumns(10);
-		GridBagConstraints gbc_textField_11 = new GridBagConstraints();
-		gbc_textField_11.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_11.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_11.gridx = 2;
-		gbc_textField_11.gridy = 9;
-		panel.add(textField_11, gbc_textField_11);
-
-		JCheckBox checkBox_7 = new JCheckBox("");
-		GridBagConstraints gbc_checkBox_7 = new GridBagConstraints();
-		gbc_checkBox_7.insets = new Insets(0, 0, 5, 0);
-		gbc_checkBox_7.gridx = 3;
-		gbc_checkBox_7.gridy = 9;
-		panel.add(checkBox_7, gbc_checkBox_7);
+		argBoxes[8] = new JTextField();
+		argBoxes[8].setColumns(10);
+		GridBagConstraints gbc_argBox8 = new GridBagConstraints();
+		gbc_argBox8.insets = new Insets(0, 0, 5, 0);
+		gbc_argBox8.fill = GridBagConstraints.HORIZONTAL;
+		gbc_argBox8.gridx = 2;
+		gbc_argBox8.gridy = 9;
+		panel.add(argBoxes[8], gbc_argBox8);
 
 		label_9 = new JLabel("9");
 		GridBagConstraints gbc_label_9 = new GridBagConstraints();
@@ -459,20 +379,13 @@ public class MethodDialog extends JDialog {
 		gbc_typeBox10.gridy = 10;
 		panel.add(typeBoxes[9], gbc_typeBox10);
 
-		textField_12 = new JTextField();
-		textField_12.setColumns(10);
-		GridBagConstraints gbc_textField_12 = new GridBagConstraints();
-		gbc_textField_12.insets = new Insets(0, 0, 0, 5);
-		gbc_textField_12.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_12.gridx = 2;
-		gbc_textField_12.gridy = 10;
-		panel.add(textField_12, gbc_textField_12);
-
-		JCheckBox checkBox_8 = new JCheckBox("");
-		GridBagConstraints gbc_checkBox_8 = new GridBagConstraints();
-		gbc_checkBox_8.gridx = 3;
-		gbc_checkBox_8.gridy = 10;
-		panel.add(checkBox_8, gbc_checkBox_8);
+		argBoxes[9] = new JTextField();
+		argBoxes[9].setColumns(10);
+		GridBagConstraints gbc_argBox9 = new GridBagConstraints();
+		gbc_argBox9.fill = GridBagConstraints.HORIZONTAL;
+		gbc_argBox9.gridx = 2;
+		gbc_argBox9.gridy = 10;
+		panel.add(argBoxes[9], gbc_argBox9);
 
 		JLabel lblFieldName = new JLabel("Method Name");
 		lblFieldName.setBounds(12, 33, 115, 13);
@@ -491,6 +404,12 @@ public class MethodDialog extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("Run");
+				okButton.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						runMethod();
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -507,6 +426,34 @@ public class MethodDialog extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+	}
+
+	private void runMethod() {
+		try {
+
+			Object ret = interpret.runMethod(instanceName, method, makeArgmentStrs());
+			if( ret != null ) {
+				retValueBox.setText(ret.toString());
+			} else {
+				retValueBox.setText("void");
+			}
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			// TODO 自動生成された catch ブロック
+			exeptionBox.setText(e.getClass().getName() + " " + e.getMessage());
+			e.printStackTrace();
+		}
+
+
+	}
+
+
+	private String[] makeArgmentStrs() {
+		int length = method.getParameterTypes().length;
+		String[] strs = new String[length];
+		for (int i = 0; i < length; i++) {
+			strs[i] = argBoxes[i].getText();
+		}
+		return strs;
 	}
 
 	private void updateTypeBox() {

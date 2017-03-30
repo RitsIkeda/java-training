@@ -1,4 +1,4 @@
-package jpl.ch15.ex02;
+package jpl.ch16.ex01;
 
 import java.lang.reflect.*;
 
@@ -72,12 +72,6 @@ public class TypeDesc {
         } else {
             out.println();
         }
-            Class<?> enclosingCls = cls.getEnclosingClass();
-            if(enclosingCls != null) {
-                System.out.println(" nested in" + enclosingCls.getCanonicalName());
-            }
-
-
 
         Type[] interfaces = cls.getGenericInterfaces();
         for(Type iface : interfaces) {

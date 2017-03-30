@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 import java.lang.reflect.Field;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -115,33 +114,22 @@ public class FieldDialog extends JDialog {
 
 		JLabel lblNewValue = new JLabel("New Value");
 		GridBagConstraints gbc_lblNewValue = new GridBagConstraints();
+		gbc_lblNewValue.gridwidth = 2;
 		gbc_lblNewValue.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewValue.fill = GridBagConstraints.VERTICAL;
 		gbc_lblNewValue.gridx = 0;
 		gbc_lblNewValue.gridy = 4;
 		contentPanel.add(lblNewValue, gbc_lblNewValue);
 
-		JLabel lblUseCreatedInstance = new JLabel("Use Created Instance");
-		GridBagConstraints gbc_lblUseCreatedInstance = new GridBagConstraints();
-		gbc_lblUseCreatedInstance.insets = new Insets(0, 0, 5, 0);
-		gbc_lblUseCreatedInstance.gridx = 1;
-		gbc_lblUseCreatedInstance.gridy = 4;
-		contentPanel.add(lblUseCreatedInstance, gbc_lblUseCreatedInstance);
-
 		newValueBox = new JTextField();
 		newValueBox.setColumns(10);
 		GridBagConstraints gbc_newValueBox = new GridBagConstraints();
+		gbc_newValueBox.gridwidth = 2;
 		gbc_newValueBox.insets = new Insets(0, 0, 0, 5);
 		gbc_newValueBox.fill = GridBagConstraints.BOTH;
 		gbc_newValueBox.gridx = 0;
 		gbc_newValueBox.gridy = 5;
 		contentPanel.add(newValueBox, gbc_newValueBox);
-
-		JCheckBox useInstanceCheck = new JCheckBox("");
-		GridBagConstraints gbc_useInstanceCheck = new GridBagConstraints();
-		gbc_useInstanceCheck.gridx = 1;
-		gbc_useInstanceCheck.gridy = 5;
-		contentPanel.add(useInstanceCheck, gbc_useInstanceCheck);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -152,7 +140,7 @@ public class FieldDialog extends JDialog {
 					@Override
 					public void mouseClicked(MouseEvent arg0) {
 						try {
-							interpret.set(instanceName, field, newValueBox.getText(), useInstanceCheck.isSelected());
+							interpret.set(instanceName, field, newValueBox.getText());
 							setVisible(false);
 						} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException
 								| SecurityException e) {

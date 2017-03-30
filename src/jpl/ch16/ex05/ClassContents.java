@@ -1,5 +1,7 @@
-package jpl.ch15.ex03;
+package jpl.ch16.ex05;
 
+
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Member;
 import java.util.ArrayList;
 
@@ -44,9 +46,13 @@ public class ClassContents {
 			}
 			printedStrs.add(decl);
 
-
 			System.out.print(" ");
 			System.out.println( strip(decl, "java.lang"));
+
+			Annotation[] annotations = c.getAnnotations();
+			for(Annotation annotation : annotations ){
+				System.out.println(strip(annotation.toString(), "java.lang"));
+			}
 		}
 	}
 
@@ -61,6 +67,7 @@ public class ClassContents {
 			}
 			System.out.print(" ");
 			System.out.println( strip(decl, "java.lang"));
+
 		}
 	}
 

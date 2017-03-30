@@ -1,4 +1,4 @@
-package jpl.ch15.ex04;
+package jpl.ch16.ex04;
 
 import java.lang.annotation.Annotation;
 
