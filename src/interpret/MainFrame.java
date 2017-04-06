@@ -46,6 +46,11 @@ public class MainFrame extends JFrame {
 		frame.setVisible(true);
 	}
 
+	public void addInstanceList(String name) {
+		instanceModel.addElement(name);
+		instanceList.setSelectedIndex(instanceModel.getSize() - 1);
+	}
+
 	private void createObj() {
 		String name = nameField.getText();
 		if (name.isEmpty()) {
@@ -64,10 +69,33 @@ public class MainFrame extends JFrame {
 			e.printStackTrace();
 			return;
 		}
-		// if( setFieldAndMethods(name) ) {
-		instanceModel.addElement(name);
-		instanceList.setSelectedIndex(instanceModel.getSize() - 1);
+		// if( setFieldAndMethods(name) ) {classNameField.getText()
+		addInstanceList(name);
 		// }
+	}
+
+	private void selectConstroctor() {
+		String name = nameField.getText();
+		if (name.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "インスタンスの名前を入力ください。", "Name Empty", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		if(interpret.exits(name)) {
+			JOptionPane.showMessageDialog(null, "インスタンスの名前が重複しています。", "Name Doubling", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		String className =  classNameField.getText();
+
+		SelectConstructor sc;
+		try {
+			sc = new SelectConstructor(interpret, className, name, interpret.getConstructorStrs(className), this);
+			sc.setVisible(true);
+		} catch (ClassNotFoundException e) {
+			// TODO 自動生成された catch ブロック
+			JOptionPane.showMessageDialog(null, "クラス名が不正です。", "Class Name Errror", JOptionPane.ERROR_MESSAGE);
+		}
+
+
 	}
 
 	private boolean setFieldAndMethods(String name) {
@@ -122,16 +150,15 @@ public class MainFrame extends JFrame {
 		createObj.setBounds(82, 88, 136, 39);
 		getContentPane().add(createObj);
 
-		JButton btnNewButton = new JButton("Arbitrary Constructor");
-		btnNewButton.addMouseListener(new MouseAdapter() {
+		JButton constructorBtn = new JButton("Arbitrary Constructor");
+		constructorBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				JOptionPane.showMessageDialog(null, "This function will be coming soon.", "Sorry",
-						JOptionPane.INFORMATION_MESSAGE);
+				selectConstroctor();
 			}
 		});
-		btnNewButton.setBounds(270, 88, 179, 39);
-		getContentPane().add(btnNewButton);
+		constructorBtn.setBounds(424, 88, 179, 39);
+		getContentPane().add(constructorBtn);
 
 		classNameField = new JTextField();
 		classNameField.setBounds(136, 10, 480, 29);
@@ -141,18 +168,6 @@ public class MainFrame extends JFrame {
 		JTextArea textArea = new JTextArea();
 		textArea.setBounds(258, 108, -217, 95);
 		getContentPane().add(textArea);
-
-		JButton btnCreateArray = new JButton("Create Array");
-		btnCreateArray.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				JOptionPane.showMessageDialog(null, "This function will be coming soon.", "Sorry",
-						JOptionPane.INFORMATION_MESSAGE);
-
-			}
-		});
-		btnCreateArray.setBounds(480, 88, 136, 39);
-		getContentPane().add(btnCreateArray);
 
 		JPanel fieldPanel = new JPanel();
 		fieldPanel.setBounds(369, 160, 306, 273);

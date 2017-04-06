@@ -1,5 +1,6 @@
 package interpret;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
@@ -34,7 +35,7 @@ public class Interpret {
 
 	public String[] getFirldListsOfInstance(String name) throws ClassNotFoundException {
 
-		 Class<?>  classObj = classes.get(name);
+		Class<?>  classObj = classes.get(name);
 		//System.out.println(name);
 		Member[] members = classObj.getFields();
 
@@ -42,9 +43,27 @@ public class Interpret {
 
 		for (int i = 0; i < members.length; i++) {
 			result[i] = members[i].getName();
-			System.out.println(result[i]);
+		//	System.out.println(result[i]);
 		}
 		return result;
+	}
+
+	public String[] getConstructorStrs(String className) throws ClassNotFoundException {
+		Class<?>  classObj =Class.forName(className);
+		Constructor<?>[] cs = classObj.getConstructors();
+		String result[] = new String[cs.length];
+
+		for (int i = 0; i < cs.length; i++) {
+			result[i] = cs[i].toString();
+
+		}
+		return result;
+
+
+	}
+	public Constructor<?>[] getConstructorLists(String className) throws ClassNotFoundException {
+		Class<?>  classObj =Class.forName(className);
+		return  classObj.getConstructors();
 	}
 
 	public Method[] getMethodLists(String className) throws ClassNotFoundException {
@@ -74,6 +93,9 @@ public class Interpret {
 		return ret;
 	}
 
+	public boolean exits(String instanceName) {
+		return instances.containsKey(instanceName);
+	}
 
 	public void createInstance(String className, String objName)
 			throws InstantiationException, IllegalAccessException, ClassNotFoundException {
@@ -183,9 +205,8 @@ public class Interpret {
 		field.set(instances.get(instanceName), conevertStrToObjcet( valueName, field.getType().toString()));
 
 	}
-	public Object runMethod(String instanceName, Method method, String argmentNames[] ) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public Object runMethod( String instanceName, Method method, String argmentNames[] ) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Class<?>[] cs = method.getParameterTypes();
-
 
 
 		//Object[] argments = new String[cs.length];
@@ -259,6 +280,94 @@ public class Interpret {
 
 
 	}
+
+	public void runConstructor(String className, String instanceName, Constructor<?> constructor, String[] argmentNames) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException {
+		if (instances.containsKey(instanceName)) {
+			throw new InstantiationException();
+		}
+
+
+		constructor.setAccessible(true);
+		 Class<?>[] cs = constructor.getParameterTypes();
+
+		 Object createdObj;
+		//Object[] argments = new String[cs.length];
+		//argments[i] = obj;
+
+		/* ArrayStoreException対策 */
+			switch (cs.length) {
+			case 0:
+				createdObj =  constructor.newInstance();
+				break;
+			case 1:
+				createdObj = constructor.newInstance(conevertStrToObjcet(argmentNames[0], cs[0].getName()));
+				break;
+			case 2:
+				createdObj = constructor.newInstance(conevertStrToObjcet(argmentNames[0], cs[0].getName()), conevertStrToObjcet(argmentNames[1], cs[1].getName()));
+				break;
+			case 3:
+				createdObj = constructor.newInstance(
+						conevertStrToObjcet(argmentNames[0], cs[0].getName()), conevertStrToObjcet(argmentNames[1], cs[1].getName())
+						, conevertStrToObjcet(argmentNames[2], cs[2].getName()));
+				break;
+			case 4:
+				createdObj = constructor.newInstance(
+						conevertStrToObjcet(argmentNames[0], cs[0].getName()), conevertStrToObjcet(argmentNames[1], cs[1].getName())
+						, conevertStrToObjcet(argmentNames[2], cs[2].getName()), conevertStrToObjcet(argmentNames[3], cs[3].getName()));
+				break;
+			case 5:
+				createdObj = constructor.newInstance(
+						conevertStrToObjcet(argmentNames[0], cs[0].getName()), conevertStrToObjcet(argmentNames[1], cs[1].getName())
+						, conevertStrToObjcet(argmentNames[2], cs[2].getName()), conevertStrToObjcet(argmentNames[3], cs[3].getName())
+						, conevertStrToObjcet(argmentNames[4], cs[4].getName()));
+				break;
+			case 6:
+				createdObj = constructor.newInstance(
+						 conevertStrToObjcet(argmentNames[0], cs[0].getName()), conevertStrToObjcet(argmentNames[1], cs[1].getName())
+						, conevertStrToObjcet(argmentNames[2], cs[2].getName()), conevertStrToObjcet(argmentNames[3], cs[3].getName())
+						, conevertStrToObjcet(argmentNames[4], cs[4].getName()), conevertStrToObjcet(argmentNames[5], cs[5].getName())
+						);
+				break;
+			case 7:
+				createdObj = constructor.newInstance(
+						 conevertStrToObjcet(argmentNames[0], cs[0].getName()), conevertStrToObjcet(argmentNames[1], cs[1].getName())
+						, conevertStrToObjcet(argmentNames[2], cs[2].getName()), conevertStrToObjcet(argmentNames[3], cs[3].getName())
+						, conevertStrToObjcet(argmentNames[4], cs[4].getName()), conevertStrToObjcet(argmentNames[5], cs[5].getName())
+						, conevertStrToObjcet(argmentNames[6], cs[6].getName()));
+				break;
+			case 8:
+				createdObj = constructor.newInstance(
+						 conevertStrToObjcet(argmentNames[0], cs[0].getName()), conevertStrToObjcet(argmentNames[1], cs[1].getName())
+						, conevertStrToObjcet(argmentNames[2], cs[2].getName()), conevertStrToObjcet(argmentNames[3], cs[3].getName())
+						, conevertStrToObjcet(argmentNames[4], cs[4].getName()), conevertStrToObjcet(argmentNames[5], cs[5].getName())
+						, conevertStrToObjcet(argmentNames[6], cs[6].getName()), conevertStrToObjcet(argmentNames[7], cs[7].getName())
+						);
+				break;
+			case 9:
+				createdObj = constructor.newInstance(
+						 conevertStrToObjcet(argmentNames[0], cs[0].getName()), conevertStrToObjcet(argmentNames[1], cs[1].getName())
+						, conevertStrToObjcet(argmentNames[2], cs[2].getName()), conevertStrToObjcet(argmentNames[3], cs[3].getName())
+						, conevertStrToObjcet(argmentNames[4], cs[4].getName()), conevertStrToObjcet(argmentNames[5], cs[5].getName())
+						, conevertStrToObjcet(argmentNames[6], cs[6].getName()), conevertStrToObjcet(argmentNames[7], cs[7].getName())
+						, conevertStrToObjcet(argmentNames[8], cs[8].getName()));
+				break;
+			case 10:
+				createdObj = constructor.newInstance(
+						 conevertStrToObjcet(argmentNames[0], cs[0].getName()), conevertStrToObjcet(argmentNames[1], cs[1].getName())
+						, conevertStrToObjcet(argmentNames[2], cs[2].getName()), conevertStrToObjcet(argmentNames[3], cs[3].getName())
+						, conevertStrToObjcet(argmentNames[4], cs[4].getName()), conevertStrToObjcet(argmentNames[5], cs[5].getName())
+						, conevertStrToObjcet(argmentNames[6], cs[6].getName()), conevertStrToObjcet(argmentNames[7], cs[7].getName())
+						, conevertStrToObjcet(argmentNames[8], cs[8].getName()), conevertStrToObjcet(argmentNames[9], cs[9].getName())
+						);
+				break;
+		default:
+			createdObj =  constructor.newInstance();
+		}
+		instances.put(instanceName, createdObj);
+		classes.put(instanceName, Class.forName(className));
+	}
+
+
 }
 
 

@@ -2,13 +2,13 @@ package interpret;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -17,16 +17,16 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-public class MethodDialog extends JDialog {
+public class ConstructorDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField instanceBox;
-	private JTextField retTypeBox;
-	private JTextField retValueBox;
 	private JTextField exeptionBox;
+	private MainFrame owner;
 
 	private Interpret interpret;
-	private Method method;
+	private  Constructor<?> constructor;
+	private String className;
 	private String instanceName;
 	private JTextField methodBox;
 
@@ -45,51 +45,36 @@ public class MethodDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public MethodDialog(Interpret interpret, String instanceName, Method method) {
-		this.method = method;
+	public ConstructorDialog(Interpret interpret, String className,  String instanceName, Constructor<?> constructor, MainFrame owner) {
+		this.constructor = constructor;
 		this.interpret = interpret;
 		this.instanceName = instanceName;
+		this.className = className;
+		this.owner = owner;
 
-		setBounds(100, 100, 538, 593);
+		setBounds(100, 100, 538, 566);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 
 		JLabel lblMethodName = new JLabel("Instance Name");
-		lblMethodName.setBounds(12, 10, 115, 13);
+		lblMethodName.setBounds(12, 30, 115, 13);
 		contentPanel.add(lblMethodName);
 
 		instanceBox = new JTextField(instanceName);
 		instanceBox.setEditable(false);
-		instanceBox.setBounds(139, 7, 377, 19);
+		instanceBox.setBounds(139, 27, 377, 19);
 		instanceBox.setColumns(10);
 		contentPanel.add(instanceBox);
 
-		JLabel lblRtrunType = new JLabel("Return Type");
-		lblRtrunType.setBounds(12, 447, 81, 13);
-		contentPanel.add(lblRtrunType);
-
-		retTypeBox = new JTextField(method.getReturnType().getName());
-		retTypeBox.setBounds(87, 444, 146, 19);
-		retTypeBox.setColumns(10);
-		contentPanel.add(retTypeBox);
-
-		JLabel lblRetunValue = new JLabel("Return Value");
-		lblRetunValue.setBounds(281, 447, 81, 13);
-		contentPanel.add(lblRetunValue);
-
-		retValueBox = new JTextField();
-		retValueBox.setBounds(360, 444, 150, 19);
-		retValueBox.setColumns(10);
-		contentPanel.add(retValueBox);
-
 		JLabel lblExeption = new JLabel("Exeption");
-		lblExeption.setBounds(12, 470, 81, 13);
+		lblExeption.setBounds(12, 447, 81, 13);
 		contentPanel.add(lblExeption);
 
 		exeptionBox = new JTextField();
-		exeptionBox.setBounds(12, 495, 504, 19);
+		exeptionBox.setFont(new Font("MS UI Gothic", Font.PLAIN, 10));
+		exeptionBox.setBounds(12, 464, 504, 25);
 		exeptionBox.setColumns(10);
 		contentPanel.add(exeptionBox);
 
@@ -386,14 +371,14 @@ public class MethodDialog extends JDialog {
 		gbc_argBox9.gridy = 10;
 		panel.add(argBoxes[9], gbc_argBox9);
 
-		JLabel lblFieldName = new JLabel("Method Name");
-		lblFieldName.setBounds(12, 33, 115, 13);
+		JLabel lblFieldName = new JLabel("Class Name");
+		lblFieldName.setBounds(12, 10, 115, 13);
 		contentPanel.add(lblFieldName);
 
-		methodBox = new JTextField(method.getName());
+		methodBox = new JTextField(className);
 		methodBox.setEditable(false);
 		methodBox.setColumns(10);
-		methodBox.setBounds(139, 30, 377, 19);
+		methodBox.setBounds(139, 7, 377, 19);
 		contentPanel.add(methodBox);
 
 		updateTypeBox();
@@ -429,25 +414,18 @@ public class MethodDialog extends JDialog {
 
 	private void runMethod() {
 		try {
-
-			Object ret = interpret.runMethod(instanceName, method, makeArgmentStrs());
-			if( ret != null ) {
-				retValueBox.setText(ret.toString());
-			} else {
-				retValueBox.setText("void");
-			}
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			interpret.runConstructor(className, instanceName, constructor, makeArgmentStrs());
+			owner.addInstanceList(instanceName);
+		} catch (Exception e) {
 			// TODO 自動生成された catch ブロック
 			exeptionBox.setText(e.getClass().getName() + " " + e.getMessage());
 			e.printStackTrace();
 		}
-
-
 	}
 
 
 	private String[] makeArgmentStrs() {
-		int length = method.getParameterTypes().length;
+		int length = constructor.getParameterTypes().length;
 		String[] strs = new String[length];
 		for (int i = 0; i < length; i++) {
 			strs[i] = argBoxes[i].getText();
@@ -456,7 +434,7 @@ public class MethodDialog extends JDialog {
 	}
 
 	private void updateTypeBox() {
-		Class<?>[] c = method.getParameterTypes();
+		Class<?>[] c = constructor.getParameterTypes();
 		for (int i = 0; i < typeBoxes.length; i++) {
 			if (i < c.length) {
 				typeBoxes[i].setText(c[i].getName());
