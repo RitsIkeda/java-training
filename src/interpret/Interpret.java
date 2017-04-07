@@ -283,7 +283,7 @@ public class Interpret {
 
 	public void runConstructor(String className, String instanceName, Constructor<?> constructor, String[] argmentNames) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException {
 		if (instances.containsKey(instanceName)) {
-			throw new InstantiationException();
+			throw new IllegalAccessException("instance name doubled");
 		}
 
 

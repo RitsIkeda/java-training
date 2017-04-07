@@ -9,6 +9,7 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -416,8 +417,10 @@ public class ConstructorDialog extends JDialog {
 		try {
 			interpret.runConstructor(className, instanceName, constructor, makeArgmentStrs());
 			owner.addInstanceList(instanceName);
+		} catch(InvocationTargetException e) {
+			exeptionBox.setText(e.getCause().getClass().toString() );
+
 		} catch (Exception e) {
-			// TODO 自動生成された catch ブロック
 			exeptionBox.setText(e.getClass().getName() + " " + e.getMessage());
 			e.printStackTrace();
 		}

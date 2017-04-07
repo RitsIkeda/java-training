@@ -436,7 +436,10 @@ public class MethodDialog extends JDialog {
 			} else {
 				retValueBox.setText("void");
 			}
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		} catch(InvocationTargetException e) {
+			exeptionBox.setText(e.getCause().getClass().toString() );
+		}
+		catch (IllegalAccessException | IllegalArgumentException  e) {
 			// TODO 自動生成された catch ブロック
 			exeptionBox.setText(e.getClass().getName() + " " + e.getMessage());
 			e.printStackTrace();
