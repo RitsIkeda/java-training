@@ -9,7 +9,7 @@ public class OutAnnotation {
 
 	public static void main(String[] args) {
 		OutAnnotation test = new OutAnnotation();
-		test.outAnnotation("jpl.ch15.ex04.SampleAnnotation");
+		test.outAnnotation("jpl.ch16.ex04.SampleAnnotation");
 	}
 
 	public void outAnnotation(String name) {
