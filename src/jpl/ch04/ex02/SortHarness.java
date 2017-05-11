@@ -1,4 +1,4 @@
-package jpl.ch03.ex12;
+package jpl.ch04.ex02;
 
 interface SortInterface {
     SortMetrics sort(Object[] data);

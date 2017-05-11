@@ -19,6 +19,7 @@ class SingleLinkQueue<E> {
         }
         public Cell setNext(Cell next) {
             this.next = next;
+            return next;
         }
     }
     protected Cell head;

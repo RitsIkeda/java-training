@@ -30,11 +30,13 @@ public class ThreadPool {
 	private List<Runnable> queue = Collections.synchronizedList(new ArrayList<Runnable>());
 
 	private class MyThread extends Thread {
+
 		volatile private boolean running = true;
 		volatile private Thread head;
 
 		public void forceStop() {
 			running = false;
+			head = null;
 		}
 
 		public synchronized void run() {
@@ -46,35 +48,33 @@ public class ThreadPool {
 
 						try {
 							//System.out.println("wait start size is" + queue.size());
+							if (!running) {
+								return;
+							}
 							queue.wait();
 							//System.out.println("wait");
-							if (!running)
-								return;
+							//System.out.println("not return");
 						} catch (InterruptedException e) {
+							return;
 						}
+					}
+					if (!running) {
+						break;
 					}
 					//System.out.println("try");
 					try {
 						if (!queue.isEmpty()) {
 							//System.out.println("new");
 							head = new Thread(queue.remove(0));
+
 						}
 						queue.notifyAll();
 					} catch (NoSuchElementException e) {
 						return;
 					}
 				}
-				if (head != null) {
-					if (running) {
-						//System.out.println("run1");
-						head.run();
-					} else {
-						//System.out.println("run2");
-						head.run();
-						while (head.isAlive()) {
-							//System.out.println("last wait");
-						}
-					}
+				if ( head != null) {
+					head.run();
 				}
 			}
 			//System.out.println("end1");
@@ -141,36 +141,19 @@ public class ThreadPool {
 				//System.out.println("empty wait");
 			}
 
+			/*
 			for (int i = 0; i < numberOfThreads; i++) {
 				while (threads.get(i).head != null && threads.get(i).head.isAlive() ) {
 					//System.out.println("wait threas");
 				}
 				threads.get(i).forceStop();
-			}
-			threads.clear();
-
-			ThreadGroup tg = Thread.currentThread().getThreadGroup();
-			int activeCount = tg.activeCount();
-
-			while (activeCount > 100000) {
-				tg = Thread.currentThread().getThreadGroup();
-				activeCount = tg.activeCount();
-				//System.out.println(activeCount);
-				 Thread[] threads = new Thread[activeCount];
-		        tg.enumerate(threads);
-				for (Thread t : threads) {
-					if(!t.getName().equals("main")) {
-						/*
-						try {
-							//System.out.println("join" + t.getName() + " " + activeCount);
-							t.join();
-							//System.out.println("join" + t.getName() + " " + activeCount);
-							//System.out.println(t.isAlive());
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}*/
+			}*/
+			for (int i = 0; i < numberOfThreads; i++) {
+				threads.get(i).forceStop();
+				while (threads.get(i).isAlive() ) {
+					synchronized (queue) {
+						queue.notifyAll();
 					}
-					
 				}
 			}
 
@@ -211,7 +194,8 @@ public class ThreadPool {
 		}
 		synchronized (queue) {
 			queue.add(runnable);
+			queue.notifyAll();
 		}
-		queue.notifyAll();
+
 	}
 }

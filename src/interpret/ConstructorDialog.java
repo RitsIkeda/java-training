@@ -417,6 +417,7 @@ public class ConstructorDialog extends JDialog {
 		try {
 			interpret.runConstructor(className, instanceName, constructor, makeArgmentStrs());
 			owner.addInstanceList(instanceName);
+		
 		} catch(InvocationTargetException e) {
 			exeptionBox.setText(e.getCause().getClass().toString() );
 

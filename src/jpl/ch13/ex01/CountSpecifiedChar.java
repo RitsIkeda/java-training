@@ -1,4 +1,4 @@
-package jpl.ch12.ex01;
+package jpl.ch13.ex01;
 
 public class CountSpecifiedChar {
     public static int countSpecifiedChar(String target, char specifiedChar) {
