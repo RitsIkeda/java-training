@@ -415,14 +415,16 @@ public class ConstructorDialog extends JDialog {
 
 	private void runMethod() {
 		try {
+			exeptionBox.setText("");
 			interpret.runConstructor(className, instanceName, constructor, makeArgmentStrs());
 			owner.addInstanceList(instanceName);
+
 		} catch(InvocationTargetException e) {
-			exeptionBox.setText(e.getCause().getClass().toString() );
+			exeptionBox.setText(e.getCause().getClass().toString()  + " " +  e.getCause().getMessage());
 
 		} catch (Exception e) {
 			exeptionBox.setText(e.getClass().getName() + " " + e.getMessage());
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 

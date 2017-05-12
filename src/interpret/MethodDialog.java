@@ -429,7 +429,7 @@ public class MethodDialog extends JDialog {
 
 	private void runMethod() {
 		try {
-
+			exeptionBox.setText("");
 			Object ret = interpret.runMethod(instanceName, method, makeArgmentStrs());
 			if( ret != null ) {
 				retValueBox.setText(ret.toString());
@@ -437,12 +437,14 @@ public class MethodDialog extends JDialog {
 				retValueBox.setText("void");
 			}
 		} catch(InvocationTargetException e) {
-			exeptionBox.setText(e.getCause().getClass().toString() );
+			exeptionBox.setText(e.getCause().getClass().toString() + " " +  e.getCause().getMessage());
+			retValueBox.setText("");
 		}
-		catch (IllegalAccessException | IllegalArgumentException  e) {
+		catch ( Exception  e) {
 			// TODO 自動生成された catch ブロック
 			exeptionBox.setText(e.getClass().getName() + " " + e.getMessage());
-			e.printStackTrace();
+			retValueBox.setText("");
+			//e.printStackTrace();
 		}
 
 

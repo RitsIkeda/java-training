@@ -27,6 +27,7 @@ public class MainFrame extends JFrame {
 	private Interpret interpret = new Interpret();
 	private JList<String> methodList;
 	private JList<String> instanceList;
+	private JList<String> elementList;
 	private DefaultListModel<String> instanceModel = new DefaultListModel<String>();
 
 	public int flexibleInt = 4;
@@ -34,12 +35,8 @@ public class MainFrame extends JFrame {
 
 	private Method[] methods;
 
-	private enum AnlyzeMode {
-		NONE, FIELD__MODE, METHOD_MODE, CREATE_OBJ_MODE, ARRAY_MODE
-	}
-
-	AnlyzeMode currentMode = AnlyzeMode.NONE;
 	private JTextField nameField;
+	private JTextField lengthBox;
 
 	public static void main(String[] args) {
 		MainFrame frame = new MainFrame();
@@ -53,6 +50,10 @@ public class MainFrame extends JFrame {
 
 	private void createObj() {
 		String name = nameField.getText();
+		if (name.contains("[") || name.contains("]") ) {
+			JOptionPane.showMessageDialog(null, "インスタンスの名前が不正です。", "Invalid Name", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		if (name.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "インスタンスの名前を入力ください。", "Name Empty", JOptionPane.ERROR_MESSAGE);
 			return;
@@ -62,11 +63,11 @@ public class MainFrame extends JFrame {
 			interpret.createInstance(classNameField.getText(), name);
 		} catch (InstantiationException | IllegalAccessException e) {
 			MessageUtil.cannotCreateObjError();
-			e.printStackTrace();
+			//e.printStackTrace();
 			return;
 		} catch (ClassNotFoundException e) {
 			MessageUtil.showClassError();
-			e.printStackTrace();
+			//e.printStackTrace();
 			return;
 		}
 		// if( setFieldAndMethods(name) ) {classNameField.getText()
@@ -92,9 +93,39 @@ public class MainFrame extends JFrame {
 			sc.setVisible(true);
 		} catch (ClassNotFoundException e) {
 			// TODO 自動生成された catch ブロック
-			JOptionPane.showMessageDialog(null, "クラス名が不正です。", "Class Name Errror", JOptionPane.ERROR_MESSAGE);
+			MessageUtil.showClassError();
+			e.printStackTrace();
 		}
 
+
+	}
+	private void setElementFields(String name) {
+		String elements[] = interpret.getElementStrs(name);
+		elementList.setModel(new AbstractListModel<String>() {
+			public int getSize() {
+				return elements.length;
+			}
+
+			public String getElementAt(int index) {
+				return elements[index];
+			}
+		});
+
+	}
+	private void setEmpty(JList<String> list) {
+		list.setModel(new AbstractListModel<String>() {
+			public int getSize() {
+				return 0;
+			}
+
+			public String getElementAt(int index) {
+				return "";
+			}
+		});
+		/*
+		for(int i =0;  i < list.getModel().getSize(); i ++) {
+			list.remove(i);
+		}*/
 
 	}
 
@@ -122,8 +153,12 @@ public class MainFrame extends JFrame {
 				}
 			});
 
-		} catch (Exception e) {
+		} catch (NullPointerException e) {
+			throw e;
+		}
+		catch (Exception e) {
 			MessageUtil.showClassError();
+			e.printStackTrace();
 			return false;
 		}
 		return true;
@@ -131,6 +166,7 @@ public class MainFrame extends JFrame {
 	}
 
 	public MainFrame() {
+		getContentPane().setLocation(-25, -478);
 
 		// instanceModel.set
 
@@ -147,7 +183,7 @@ public class MainFrame extends JFrame {
 				createObj();
 			}
 		});
-		createObj.setBounds(82, 88, 136, 39);
+		createObj.setBounds(25, 88, 136, 39);
 		getContentPane().add(createObj);
 
 		JButton constructorBtn = new JButton("Arbitrary Constructor");
@@ -157,11 +193,11 @@ public class MainFrame extends JFrame {
 				selectConstroctor();
 			}
 		});
-		constructorBtn.setBounds(424, 88, 179, 39);
+		constructorBtn.setBounds(237, 88, 179, 39);
 		getContentPane().add(constructorBtn);
 
 		classNameField = new JTextField();
-		classNameField.setBounds(136, 10, 480, 29);
+		classNameField.setBounds(136, 10, 526, 29);
 		getContentPane().add(classNameField);
 		classNameField.setColumns(10);
 
@@ -220,7 +256,7 @@ public class MainFrame extends JFrame {
 				selectMethodEvent();
 			}
 		});
-		btnMethodSelect.setBounds(307, 674, 136, 29);
+		btnMethodSelect.setBounds(321, 667, 136, 29);
 		getContentPane().add(btnMethodSelect);
 
 		JLabel lblNewLabel = new JLabel("Class Name");
@@ -233,25 +269,36 @@ public class MainFrame extends JFrame {
 
 		nameField = new JTextField();
 		nameField.setColumns(10);
-		nameField.setBounds(136, 49, 480, 29);
+		nameField.setBounds(136, 49, 526, 29);
 		getContentPane().add(nameField);
 
 		JPanel panel = new JPanel();
-		panel.setBounds(25, 160, 314, 273);
+		panel.setBounds(25, 155, 314, 160);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane_1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPane_1.setBounds(0, 0, 314, 276);
+		scrollPane_1.setBounds(0, 0, 314, 157);
 		panel.add(scrollPane_1);
 
 		instanceList = new JList<String>();
 		instanceList.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent arg0) {
-				setFieldAndMethods(instanceList.getSelectedValue());
-			}
+
+			@Override
+			public void valueChanged(ListSelectionEvent paramListSelectionEvent) {
+
+					String name = instanceList.getSelectedValue();
+					if(interpret.isArray(name)) {
+						setElementFields(name);
+						setEmpty(itemList);
+						setEmpty(methodList);
+					} else {
+						setFieldAndMethods(name);
+						setEmpty(elementList);
+					}
+				}
 		});
 		scrollPane_1.setViewportView(instanceList);
 		instanceList.setModel(instanceModel);
@@ -265,8 +312,61 @@ public class MainFrame extends JFrame {
 		getContentPane().add(lblFields);
 
 		JLabel lblMethods = new JLabel("Methods");
-		lblMethods.setBounds(25, 451, 106, 13);
+		lblMethods.setBounds(25, 459, 106, 13);
 		getContentPane().add(lblMethods);
+
+		JLabel lblElements = new JLabel("Elements Of Array");
+		lblElements.setBounds(25, 331, 106, 13);
+		getContentPane().add(lblElements);
+
+		JButton createArrayBtn = new JButton("Create Array");
+		createArrayBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				createArray();
+			}
+		});
+		createArrayBtn.setBounds(478, 88, 147, 39);
+		getContentPane().add(createArrayBtn);
+
+		JScrollPane scrollPane_3 = new JScrollPane();
+		scrollPane_3.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane_3.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane_3.setBounds(25, 354, 314, 95);
+		getContentPane().add(scrollPane_3);
+
+		elementList = new JList<String>();
+		elementList.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent arg0) {
+				setElementInfo();
+			}
+		});
+
+
+		scrollPane_3.setViewportView(elementList);
+
+		JLabel lblLength = new JLabel("Length");
+		lblLength.setBounds(637, 85, 106, 13);
+		getContentPane().add(lblLength);
+
+		lengthBox = new JTextField();
+		lengthBox.setColumns(10);
+		lengthBox.setBounds(637, 108, 42, 19);
+		getContentPane().add(lengthBox);
+
+		JButton setElementBtn = new JButton("set elemet");
+		setElementBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent paramMouseEvent) {
+				int index = elementList.getSelectedIndex();
+				String target = instanceList.getSelectedValue();
+				if(index >= 0 && !target.isEmpty()) {
+					(new ElementDialog(interpret, target,index, MainFrame.this )).setVisible(true);
+				}
+			}
+		});
+		setElementBtn.setBounds(227, 328, 112, 19);
+		getContentPane().add(setElementBtn);
 	}
 
 	private void selectFieldEvent() {
@@ -275,13 +375,25 @@ public class MainFrame extends JFrame {
 			MessageUtil.invalidSelectError();
 			return;
 		}
+		if (fieldName.equals(NULL_INSTANCE_STR)) {
+			return;
+		}
 		try {
 			Field field = interpret.getField(instanceList.getSelectedValue(), fieldName);
 			// FieldDialog dialog = new FieldDialog(interpret, field.getName(),
 			// field.getType().toString(),
 			// field.get(interpret.getInstance()).toString() );
-			FieldDialog dialog = new FieldDialog(interpret, instanceList.getSelectedValue(), field);
-			dialog.setVisible(true);
+			if(!interpret.isArray( instanceList.getSelectedValue())) {
+				FieldDialog dialog = new FieldDialog(interpret, instanceList.getSelectedValue(), field);
+				dialog.setVisible(true);
+			} else {
+				if(elementList.getSelectedValue() == null) {
+					return;
+				}
+				FieldDialog dialog = new FieldDialog(interpret, elementList.getSelectedValue(), field);
+				dialog.setVisible(true);
+			}
+
 
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			MessageUtil.notFoundFieldError(e.getMessage());
@@ -301,13 +413,79 @@ public class MainFrame extends JFrame {
 			// FieldDialog dialog = new FieldDialog(interpret, field.getName(),
 			// field.getType().toString(),
 			// field.get(interpret.getInstance()).toString() );
-			MethodDialog dialog = new MethodDialog(interpret, instanceList.getSelectedValue(), method);
-			dialog.setVisible(true);
-
+			if(!interpret.isArray( instanceList.getSelectedValue())) {
+				MethodDialog dialog = new MethodDialog(interpret, instanceList.getSelectedValue(), method);
+				dialog.setVisible(true);
+			} else {
+				if(elementList.getSelectedValue() == null) {
+					return;
+				}
+				MethodDialog dialog = new MethodDialog(interpret, elementList.getSelectedValue(), method);
+				dialog.setVisible(true);
+			}
 		} catch (SecurityException | IllegalArgumentException | ClassNotFoundException e) {
 			MessageUtil.notFoundMethodError(e.getClass().getName());
 			System.out.println(e.getMessage());
 			return;
 		}
 	}
+
+	private void createArray() {
+		int length = 0;
+		try {
+			length  = Integer.parseInt(lengthBox.getText());
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(null, "配列長を正しく指定してください。", "Invalid Length", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		String name = nameField.getText();
+		if (name.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "インスタンスの名前を入力ください。", "Name Empty", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		name += "[]";
+		if(interpret.exits(name)) {
+			JOptionPane.showMessageDialog(null, "インスタンスの名前が重複しています。", "Name Doubling", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		String className = classNameField.getText();
+
+		try {
+			interpret.createArray(className, name, length);
+		} catch (ClassNotFoundException e) {
+			MessageUtil.showClassError();
+			e.printStackTrace();
+			return;
+		} catch (IllegalAccessException e) {
+			MessageUtil.cannotCreateObjError();
+			e.printStackTrace();
+			return;
+		}
+		addInstanceList(name);
+	}
+	private static final String NULL_INSTANCE_STR =  "This instance is Null";
+
+	public void setElementInfo() {
+		String name = elementList.getSelectedValue();
+		try {
+			if(interpret.getInstance(name) == null) {
+				throw new NullPointerException();
+			}
+
+			setFieldAndMethods(name);
+		} catch(NullPointerException e) {
+			//e.printStackTrace();
+			itemList.setModel(new AbstractListModel<String>() {
+				public int getSize() {
+					return 1;
+				}
+				public String getElementAt(int index) {
+					return NULL_INSTANCE_STR;
+				}
+			});
+
+		}
+	}
+
 }
