@@ -41,7 +41,8 @@ public class Interpret {
 
 		Class<?>  classObj = getClass(name);
 		//System.out.println(name);
-		Member[] members = classObj.getFields();
+		//classObj.setAccessible(true);
+		Member[] members = classObj.getDeclaredFields();
 
 		String result[] = new String[members.length];
 
@@ -247,7 +248,7 @@ public class Interpret {
 		//Object[] argments = new String[cs.length];
 		//argments[i] = obj;
 
-		/* ArrayStoreException対策 */
+		/* ArrayStoreException?? */
 		switch (cs.length) {
 		case 0:
 			return method.invoke(getInstance(instanceName) );
@@ -357,7 +358,7 @@ public class Interpret {
 		//Object[] argments = new String[cs.length];
 		//argments[i] = obj;
 
-		/* ArrayStoreException対策 */
+		/* ArrayStoreException?? */
 			switch (cs.length) {
 			case 0:
 				createdObj =  constructor.newInstance();
@@ -438,12 +439,3 @@ public class Interpret {
 
 
 }
-
-
-
-
-
-
-
-
-

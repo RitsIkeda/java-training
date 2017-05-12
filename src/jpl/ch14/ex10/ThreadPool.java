@@ -110,6 +110,9 @@ public class ThreadPool {
 	 *             if threads has been already started.
 	 */
 	public void start() {
+		synchronized (this) {
+
+
 		if (!started ) {
 			started = true;
 		} else {
@@ -124,6 +127,7 @@ public class ThreadPool {
 
 			//System.out.println("thread start");
 		}
+		}
 	}
 
 	/**
@@ -133,6 +137,7 @@ public class ThreadPool {
 	 *             if threads has not been started.
 	 */
 	public void stop() {
+		synchronized (this) {
 		if (started) {
 			started = false;
 			//System.out.println("stop start");
@@ -159,6 +164,7 @@ public class ThreadPool {
 
 		} else {
 			throw new IllegalStateException();
+		}
 		}
 	}
 
