@@ -25,7 +25,7 @@ public class Interpret {
 
 		 Class<?> classObj = Class.forName(className);
 		//System.out.println(className);
-		Member[] members = classObj.getFields();
+		Member[] members = classObj.getDeclaredFields();
 
 		String result[] = new String[members.length];
 
@@ -124,7 +124,7 @@ public class Interpret {
 	}
 
 	public Field getField(String instanceName, String fieldName) throws NoSuchFieldException, SecurityException {
-		Field field = getClass(instanceName).getField(fieldName);
+		Field field = getClass(instanceName).getDeclaredField(fieldName);
 		return field;
 	}
 
@@ -248,7 +248,7 @@ public class Interpret {
 		//Object[] argments = new String[cs.length];
 		//argments[i] = obj;
 
-		/* ArrayStoreException?? */
+		/* ArrayStoreException対策 */
 		switch (cs.length) {
 		case 0:
 			return method.invoke(getInstance(instanceName) );
@@ -358,7 +358,7 @@ public class Interpret {
 		//Object[] argments = new String[cs.length];
 		//argments[i] = obj;
 
-		/* ArrayStoreException?? */
+		/* ArrayStoreException対策 */
 			switch (cs.length) {
 			case 0:
 				createdObj =  constructor.newInstance();
