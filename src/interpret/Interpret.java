@@ -125,6 +125,7 @@ public class Interpret {
 
 	public Field getField(String instanceName, String fieldName) throws NoSuchFieldException, SecurityException {
 		Field field = getClass(instanceName).getDeclaredField(fieldName);
+		field.setAccessible(true);
 		return field;
 	}
 
@@ -153,7 +154,7 @@ public class Interpret {
 
 	public void setPrimitive(String InstanceName, Field field, String valueName)
 			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
-
+			field.setAccessible(true);
 		switch (field.getType().toString()) {
 		case "int":
 			field.setInt(getInstance(InstanceName), Integer.parseInt(valueName));
