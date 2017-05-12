@@ -11,7 +11,7 @@ public class MessageUtil {
 	}
 
 	public static void invalidSelectError() {
-		JOptionPane.showMessageDialog(null, "フィールドリストを選択してください。", "Invalid Selection", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, "アイテムリストを選択してください。", "Invalid Selection", JOptionPane.ERROR_MESSAGE);
 	}
 
 	public static void notFoundFieldError(String detail) {

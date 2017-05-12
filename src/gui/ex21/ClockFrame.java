@@ -1,6 +1,7 @@
 package gui.ex21;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -21,13 +22,13 @@ public class ClockFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public ClockFrame() {
-		setTitle("Simple Clock");
+		setTitle("Space Clock");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 500, 500);
-		contentPane = new JPanel();
+		contentPane = new ClockPanel();
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
-		contentPane.add(new ClockPanel());
 		setResizable(false);
 		setContentPane(contentPane);
 	}

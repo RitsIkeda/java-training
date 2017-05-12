@@ -439,7 +439,7 @@ public class MethodDialog extends JDialog {
 		} catch(InvocationTargetException e) {
 			exeptionBox.setText(e.getCause().getClass().toString() );
 		}
-		catch ( Exception  e) {
+		catch (IllegalAccessException | IllegalArgumentException  e) {
 			// TODO 自動生成された catch ブロック
 			exeptionBox.setText(e.getClass().getName() + " " + e.getMessage());
 			e.printStackTrace();

@@ -1,14 +1,11 @@
 package interpret;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
 
 public class Interpret {
 	//private Class<?> classObj;
@@ -36,10 +33,9 @@ public class Interpret {
 		return result;
 	}
 
-
 	public String[] getFirldListsOfInstance(String name) throws ClassNotFoundException {
 
-		Class<?>  classObj = getClass(name);
+		Class<?>  classObj = classes.get(name);
 		//System.out.println(name);
 		Member[] members = classObj.getFields();
 
@@ -62,6 +58,8 @@ public class Interpret {
 
 		}
 		return result;
+
+
 	}
 	public Constructor<?>[] getConstructorLists(String className) throws ClassNotFoundException {
 		Class<?>  classObj =Class.forName(className);
@@ -77,7 +75,7 @@ public class Interpret {
 
 	public Method[] getMethodListsOfInstance(String name) throws ClassNotFoundException {
 
-		 Class<?> classObj = getClass(name);
+		 Class<?> classObj = classes.get(name);
 		//System.out.println(classObj);
 		return classObj.getMethods();
 	}
@@ -111,42 +109,14 @@ public class Interpret {
 		instances.put(objName, instance);
 		classes.put(objName, classObj);
 	}
-	public String[] getInstances() {
 
-		LinkedList<String> list = new LinkedList<String>();
-		for(Map.Entry<String, Object> set : instances.entrySet()) {
-			if(!set.getValue().getClass().isArray()) {
-				list.add(set.getKey());
-			}
-		}
-		return list.toArray(new String[0]);
-	}
 
 	public Field getField(String instanceName, String fieldName) throws NoSuchFieldException, SecurityException {
-		Field field = getClass(instanceName).getField(fieldName);
+		Field field = classes.get(instanceName).getField(fieldName);
 		return field;
 	}
 
-	private Class<?> getClass(String instanceName) {
-		if(instanceName.contains("[")) {
-			//System.out.println(instanceName);
-			instanceName = instanceName.substring(0, instanceName.indexOf('['));
-			instanceName += "[]";
-			//System.out.println(instanceName);
-		}
-		return classes.get(instanceName);
-	}
-
 	public Object getInstance(String name) {
-		if(name.contains("[")) {
-			String indexStr = name.substring(name.indexOf('[') + 1, name.indexOf(']'));
-			int index = Integer.parseInt(indexStr);
-			//System.out.println(indexStr);
-			String arrayStr = name.substring(0,name.indexOf('['))  + "[]";
-			Object array = instances.get(arrayStr);
-			//System.out.println(arrayStr );
-			return Array.get(array, index);
-		}
 		return instances.get(name);
 	}
 
@@ -155,44 +125,40 @@ public class Interpret {
 
 		switch (field.getType().toString()) {
 		case "int":
-			field.setInt(getInstance(InstanceName), Integer.parseInt(valueName));
+			field.setInt(instances.get(InstanceName), Integer.parseInt(valueName));
 			break;
 
 		case "char":
-			field.setChar(getInstance(InstanceName), valueName.charAt(0));
+			field.setChar(instances.get(InstanceName), valueName.charAt(0));
 			break;
 
 		case "boolean":
-			field.setBoolean(getInstance(InstanceName), Boolean.parseBoolean(valueName));
+			field.setBoolean(instances.get(InstanceName), Boolean.parseBoolean(valueName));
 			break;
 
 		case "byte":
-			field.setByte(getInstance(InstanceName), Byte.parseByte(valueName));
+			field.setByte(instances.get(InstanceName), Byte.parseByte(valueName));
 			break;
 
 		case "double":
-			field.setDouble(getInstance(InstanceName), Double.parseDouble(valueName));
+			field.setDouble(instances.get(InstanceName), Double.parseDouble(valueName));
 			break;
 
 		case "float":
-			field.setFloat(getInstance(InstanceName), Float.parseFloat(valueName));
+			field.setFloat(instances.get(InstanceName), Float.parseFloat(valueName));
 			break;
 
 		case "long":
-			field.setLong(getInstance(InstanceName), Long.parseLong(valueName));
+			field.setLong(instances.get(InstanceName), Long.parseLong(valueName));
 			break;
 
 		case "short":
-			field.setShort(getInstance(InstanceName), Short.parseShort(valueName));
+			field.setShort(instances.get(InstanceName), Short.parseShort(valueName));
 			break;
 
 		case "String":
-		case "java.lang.String":
-			field.set(InstanceName, valueName);
-			break;
-
 		default:
-			field.set(getInstance(InstanceName), valueName);
+			field.set(instances.get(InstanceName), valueName);
 			break;
 		}
 	}
@@ -228,16 +194,15 @@ public class Interpret {
 			return Short.parseShort(valueName);
 
 		case "String":
-		case "java.lang.String":
 			return valueName;
 		default:
-			return getInstance(valueName);
+			return instances.get(valueName);
 		}
 	}
 	public void set(String instanceName, Field field, String valueName)
 			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
 		field.setAccessible(true);
-		field.set(getInstance(instanceName), conevertStrToObjcet( valueName, field.getType().toString()));
+		field.set(instances.get(instanceName), conevertStrToObjcet( valueName, field.getType().toString()));
 
 	}
 	public Object runMethod( String instanceName, Method method, String argmentNames[] ) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -250,58 +215,58 @@ public class Interpret {
 		/* ArrayStoreException対策 */
 		switch (cs.length) {
 		case 0:
-			return method.invoke(getInstance(instanceName) );
+			return method.invoke(instances.get(instanceName) );
 		case 1:
-			return method.invoke(getInstance(instanceName),conevertStrToObjcet(argmentNames[0], cs[0].getName()));
+			return method.invoke(instances.get(instanceName),conevertStrToObjcet(argmentNames[0], cs[0].getName()));
 
 		case 2:
-			return method.invoke(getInstance(instanceName),conevertStrToObjcet(argmentNames[0], cs[0].getName()), conevertStrToObjcet(argmentNames[1], cs[1].getName()));
+			return method.invoke(instances.get(instanceName),conevertStrToObjcet(argmentNames[0], cs[0].getName()), conevertStrToObjcet(argmentNames[1], cs[1].getName()));
 
 		case 3:
-			return method.invoke(getInstance(instanceName)
+			return method.invoke(instances.get(instanceName)
 					, conevertStrToObjcet(argmentNames[0], cs[0].getName()), conevertStrToObjcet(argmentNames[1], cs[1].getName())
 					, conevertStrToObjcet(argmentNames[2], cs[2].getName()));
 
 		case 4:
-			return method.invoke(getInstance(instanceName)
+			return method.invoke(instances.get(instanceName)
 					, conevertStrToObjcet(argmentNames[0], cs[0].getName()), conevertStrToObjcet(argmentNames[1], cs[1].getName())
 					, conevertStrToObjcet(argmentNames[2], cs[2].getName()), conevertStrToObjcet(argmentNames[3], cs[3].getName()));
 
 		case 5:
-			return method.invoke(getInstance(instanceName)
+			return method.invoke(instances.get(instanceName)
 					, conevertStrToObjcet(argmentNames[0], cs[0].getName()), conevertStrToObjcet(argmentNames[1], cs[1].getName())
 					, conevertStrToObjcet(argmentNames[2], cs[2].getName()), conevertStrToObjcet(argmentNames[3], cs[3].getName())
 					, conevertStrToObjcet(argmentNames[4], cs[4].getName()));
 
 		case 6:
-			return method.invoke(getInstance(instanceName)
+			return method.invoke(instances.get(instanceName)
 					, conevertStrToObjcet(argmentNames[0], cs[0].getName()), conevertStrToObjcet(argmentNames[1], cs[1].getName())
 					, conevertStrToObjcet(argmentNames[2], cs[2].getName()), conevertStrToObjcet(argmentNames[3], cs[3].getName())
 					, conevertStrToObjcet(argmentNames[4], cs[4].getName()), conevertStrToObjcet(argmentNames[5], cs[5].getName())
 					);
 
 		case 7:
-			return method.invoke(getInstance(instanceName)
+			return method.invoke(instances.get(instanceName)
 					, conevertStrToObjcet(argmentNames[0], cs[0].getName()), conevertStrToObjcet(argmentNames[1], cs[1].getName())
 					, conevertStrToObjcet(argmentNames[2], cs[2].getName()), conevertStrToObjcet(argmentNames[3], cs[3].getName())
 					, conevertStrToObjcet(argmentNames[4], cs[4].getName()), conevertStrToObjcet(argmentNames[5], cs[5].getName())
 					, conevertStrToObjcet(argmentNames[6], cs[6].getName()));
 		case 8:
-			return method.invoke(getInstance(instanceName)
+			return method.invoke(instances.get(instanceName)
 					, conevertStrToObjcet(argmentNames[0], cs[0].getName()), conevertStrToObjcet(argmentNames[1], cs[1].getName())
 					, conevertStrToObjcet(argmentNames[2], cs[2].getName()), conevertStrToObjcet(argmentNames[3], cs[3].getName())
 					, conevertStrToObjcet(argmentNames[4], cs[4].getName()), conevertStrToObjcet(argmentNames[5], cs[5].getName())
 					, conevertStrToObjcet(argmentNames[6], cs[6].getName()), conevertStrToObjcet(argmentNames[7], cs[7].getName())
 					);
 		case 9:
-			return method.invoke(getInstance(instanceName)
+			return method.invoke(instances.get(instanceName)
 					, conevertStrToObjcet(argmentNames[0], cs[0].getName()), conevertStrToObjcet(argmentNames[1], cs[1].getName())
 					, conevertStrToObjcet(argmentNames[2], cs[2].getName()), conevertStrToObjcet(argmentNames[3], cs[3].getName())
 					, conevertStrToObjcet(argmentNames[4], cs[4].getName()), conevertStrToObjcet(argmentNames[5], cs[5].getName())
 					, conevertStrToObjcet(argmentNames[6], cs[6].getName()), conevertStrToObjcet(argmentNames[7], cs[7].getName())
 					, conevertStrToObjcet(argmentNames[8], cs[8].getName()));
 		case 10:
-			return method.invoke(getInstance(instanceName)
+			return method.invoke(instances.get(instanceName)
 					, conevertStrToObjcet(argmentNames[0], cs[0].getName()), conevertStrToObjcet(argmentNames[1], cs[1].getName())
 					, conevertStrToObjcet(argmentNames[2], cs[2].getName()), conevertStrToObjcet(argmentNames[3], cs[3].getName())
 					, conevertStrToObjcet(argmentNames[4], cs[4].getName()), conevertStrToObjcet(argmentNames[5], cs[5].getName())
@@ -310,39 +275,11 @@ public class Interpret {
 					);
 
 		default:
-			return method.invoke(getInstance(instanceName) );
+			return method.invoke(instances.get(instanceName) );
 		}
 
 
 	}
-	public boolean isArray(String instanceName) {
-		Object obj = instances.get(instanceName);
-		return obj.getClass().isArray();
-	}
-	public String[] getElementStrs(String instanceName) {
-		Object obj = instances.get(instanceName);
-		int length = Array.getLength(obj);
-		String[] strs = new String[length];
-		String base = instanceName.substring(0,instanceName.length() - 2);
-		for(int i = 0;i < length; i++) {
-			strs[i] = base + "[" + i +"]";
-		}
-
-		return strs;
-	}
-
-	public void createArray(String className, String instanceName, int length) throws IllegalAccessException, ClassNotFoundException {
-		Class<?> c =  Class.forName(className);
-
-		if (instances.containsKey(instanceName)) {
-			throw new IllegalAccessException("instance name doubled");
-		}
-		Object array = Array.newInstance(c, length);
-		classes.put(instanceName, c);
-		instances.put(instanceName, array);
-	}
-
-
 
 	public void runConstructor(String className, String instanceName, Constructor<?> constructor, String[] argmentNames) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException {
 		if (instances.containsKey(instanceName)) {
@@ -351,7 +288,7 @@ public class Interpret {
 
 
 		constructor.setAccessible(true);
-		Class<?>[] cs = constructor.getParameterTypes();
+		 Class<?>[] cs = constructor.getParameterTypes();
 
 		 Object createdObj;
 		//Object[] argments = new String[cs.length];
@@ -428,12 +365,6 @@ public class Interpret {
 		}
 		instances.put(instanceName, createdObj);
 		classes.put(instanceName, Class.forName(className));
-	}
-
-	void setElement(String arrayName,int index, String instanceName ) {
-		Object array = instances.get(arrayName);
-		Object instance = getInstance(instanceName);
-		Array.set(array, index, instance);
 	}
 
 
