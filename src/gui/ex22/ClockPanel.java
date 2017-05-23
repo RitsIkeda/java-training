@@ -21,17 +21,14 @@ public class ClockPanel extends JPanel implements MouseMotionListener {
 	private int minute;
 	private int second;
 	private Point sun = new Point(200,280);
-	private MovePoint earth = new MovePoint(new Point(200,400), new Point2D.Double(20, 0), 25, 0.03);
-	private MovePoint moon = new MovePoint(new Point(200,400), new Point2D.Double(0, -10), 25, 0.8);
-	private MovePoint venus = new MovePoint(new Point(350,300), new Point2D.Double(0, 10), 10, 0.01);
-	private MovePoint mercury = new MovePoint(new Point(300,280), new Point2D.Double(20, -20), 15, 0.02);
+	private MovePoint earth = new MovePoint(new Point(180,400), new Point2D.Double(20, 0), 35, 0.03);
+	private MovePoint moon = new MovePoint(new Point(180,400), new Point2D.Double(0, -10), 35, 0.8);
+	private MovePoint venus = new MovePoint(new Point(300,300), new Point2D.Double(0, 10), 25, 0.01);
+	private MovePoint mercury = new MovePoint(new Point(280,280), new Point2D.Double(20, -20), 18, 0.02);
 	private MovePoint mars  = new MovePoint(new Point(400,400), new Point2D.Double(20, -20), 50, 0.01);
 	private MovePoint jupiter  = new MovePoint(new Point(0,100), new Point2D.Double(100, 30), 60, 0.002);
 	private MovePoint saturn = new MovePoint(new Point(800,300), new Point2D.Double(-50, 50), 70, 0.001);
 
-	/**
-	 * Create the panel.
-	 */
 	public ClockPanel()  {
 		hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 		minute = Calendar.getInstance().get(Calendar.MINUTE);
