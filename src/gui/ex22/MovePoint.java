@@ -31,8 +31,6 @@ public class MovePoint {
 		vy += (partner.y - point.y) * gravity;
 
 		double soeedSqure = vx * vx + vy * vy;
-
-
 		if( soeedSqure > maxSpeedSqure ) {
 			vx *= ( maxSpeedSqure / soeedSqure );
 			vy *= ( maxSpeedSqure / soeedSqure );

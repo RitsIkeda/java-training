@@ -21,8 +21,6 @@ public class DateParser {
 				 Date date = formats[i].parse(input);
 				 result[i] = formats[i].format(date);
 			} catch(ParseException e) {
-				//System.out.println("err " + input + e.getMessage());
-				//System.out.println(locale.toString());
 				result[i] = "failed parce";
 			}
 		}

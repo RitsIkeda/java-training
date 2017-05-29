@@ -20,14 +20,14 @@ public class ClockPanel extends JPanel implements MouseMotionListener {
 	private int hour;
 	private int minute;
 	private int second;
-	private Point sun = new Point(200,280);
-	private MovePoint earth = new MovePoint(new Point(180,400), new Point2D.Double(20, 0), 35, 0.03);
-	private MovePoint moon = new MovePoint(new Point(180,400), new Point2D.Double(0, -10), 35, 0.8);
-	private MovePoint venus = new MovePoint(new Point(300,300), new Point2D.Double(0, 10), 25, 0.01);
-	private MovePoint mercury = new MovePoint(new Point(280,280), new Point2D.Double(20, -20), 18, 0.02);
-	private MovePoint mars  = new MovePoint(new Point(400,400), new Point2D.Double(20, -20), 50, 0.01);
-	private MovePoint jupiter  = new MovePoint(new Point(0,100), new Point2D.Double(100, 30), 60, 0.002);
-	private MovePoint saturn = new MovePoint(new Point(800,300), new Point2D.Double(-50, 50), 70, 0.001);
+	private Point sun = new Point(220,280);
+	private MovePoint earth = new MovePoint(new Point(100,350), new Point2D.Double(15,5), 30, 0.01);
+	private MovePoint moon = new MovePoint(new Point(100,350), new Point2D.Double(0, 0), 40, 0.3);
+	private MovePoint venus = new MovePoint(new Point(300,380), new Point2D.Double(5, 10), 25, 0.018);
+	private MovePoint mercury = new MovePoint(new Point(250,280), new Point2D.Double(10, -10), 18, 0.02);
+	private MovePoint mars  = new MovePoint(new Point(400,400), new Point2D.Double(20, -10), 45, 0.01);
+	private MovePoint jupiter  = new MovePoint(new Point(100,100), new Point2D.Double(100, 30), 55, 0.003);
+	private MovePoint saturn = new MovePoint(new Point(600,200), new Point2D.Double(-50, 50), 60, 0.002);
 
 	public ClockPanel()  {
 		hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
@@ -82,7 +82,7 @@ public class ClockPanel extends JPanel implements MouseMotionListener {
 		/* moon */
 		Point p = moon.move(earth.point);
 		g2.setColor(new Color(255, 255, 100,200));
-		g2.fillOval(p.x - 2, p.y - 2, 4, 4);
+		g2.fillOval(p.x - 3, p.y - 3, 6, 6);
 
 		/* earth */
 		p = earth.move(sun);
@@ -103,22 +103,22 @@ public class ClockPanel extends JPanel implements MouseMotionListener {
 		/* mercury */
 		p = mercury.move(sun);
 		g2.setColor(new Color(150,250,255,220));
-		g2.fillOval(p.x - 5, p.y - 5, 10, 10);
+		g2.fillOval(p.x - 4, p.y - 4, 8, 8);
 
 
 		p = mars.move(sun);
-		g2.setColor(new Color(220,0,0,220));
-		g2.fillOval(p.x - 5, p.y - 5, 10, 10);
+		g2.setColor(new Color(255,0,0,220));
+		g2.fillOval(p.x - 4, p.y - 4, 8, 8);
 
 
 		p = jupiter.move(sun);
 		g2.setColor(new Color(50,255,50,220));
-		g2.fillOval(p.x - 5, p.y - 5, 10, 10);
+		g2.fillOval(p.x - 6, p.y - 6, 12, 12);
 
 
 		p = saturn.move(sun);
-		g2.setColor(new Color(200,100,100,220));
-		g2.fillOval(p.x - 5, p.y - 5, 10, 10);
+		g2.setColor(new Color(150,80,80,220));
+		g2.fillOval(p.x - 6,p.y - 6, 12, 12);
 
 		g2.setColor(new Color(255,255,100,60));
 		makeStars(g2);

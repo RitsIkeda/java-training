@@ -31,6 +31,7 @@ public class ParseDateFrame extends JFrame {
 
 	public static void main(String[] args) {
 		ParseDateFrame frame = new ParseDateFrame();
+		frame.setTitle("Date Parser");
 		frame.setVisible(true);
 	}
 
