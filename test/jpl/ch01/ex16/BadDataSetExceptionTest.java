@@ -1,8 +1,10 @@
 package jpl.ch01.ex16;
 
 import static org.junit.Assert.*;
-import org.junit.Test;
+
 import java.io.IOException;
+
+import org.junit.Test;
 
 public class BadDataSetExceptionTest {
 
@@ -34,6 +36,7 @@ public class BadDataSetExceptionTest {
             assertEquals(e.getDataName(0), "message1" );
             assertEquals(e.getDataName(1), "message2" );
             assertEquals(e.getDataName(2), "message3" );
+            assertTrue( catched );
             assertNull(e.getDataName(3));
         }
     }

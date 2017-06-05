@@ -9,7 +9,7 @@ public class AddValueThread implements Runnable {
     private static ValueCount counter;
 
     AddValueThread( ValueCount counter, int addValue, int delayTime, int loopNum) {
-        this.counter = counter;
+    	AddValueThread.setCounter(counter);
         this.addValue = addValue;
         this.delayTime = delayTime;
         this.loopNum = loopNum;
@@ -18,7 +18,7 @@ public class AddValueThread implements Runnable {
     public void run() {
         try{
             for(int i = 0; i < loopNum; i++) {
-                counter.add(addValue);
+                ValueCount.add(addValue);
                 Thread.sleep(delayTime);
             }
 
@@ -39,5 +39,13 @@ public class AddValueThread implements Runnable {
         new Thread(t4).start();
         new Thread(t5).start();
     }
+
+	public static ValueCount getCounter() {
+		return counter;
+	}
+
+	public static void setCounter(ValueCount counter) {
+		AddValueThread.counter = counter;
+	}
 
 }

@@ -1,6 +1,7 @@
 package jpl.ch02.ex15;
 
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 public class VehicleTest {
@@ -47,7 +48,8 @@ public class VehicleTest {
         Vehicle.resetStaticField();
 
         for(int i = 0; i < 100; i++) {
-            Vehicle dummy = new Vehicle();
+            @SuppressWarnings("unused")
+			Vehicle dummy = new Vehicle();
         }
         Vehicle vehicle = new Vehicle();
         assertEquals(100, vehicle.getID());
@@ -69,9 +71,11 @@ public class VehicleTest {
 
         assertEquals(0, Vehicle.getMaxID());
         for(int i = 0; i < 100; i++) {
-            Vehicle dummy = new Vehicle();
+            @SuppressWarnings("unused")
+			Vehicle dummy = new Vehicle();
         }
-        Vehicle vehicle = new Vehicle();
+        @SuppressWarnings("unused")
+		Vehicle vehicle = new Vehicle();
         assertEquals(100,Vehicle.getMaxID());
     }
     @Test

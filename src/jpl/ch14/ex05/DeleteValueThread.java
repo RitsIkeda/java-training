@@ -8,7 +8,7 @@ public class DeleteValueThread implements Runnable {
     private static ValueCount counter;
 
     DeleteValueThread( ValueCount counter, int deleteValue, int delayTime, int loopNum) {
-        this.counter = counter;
+        DeleteValueThread.counter = counter;
         this.deleteValue = deleteValue;
         this.delayTime = delayTime;
         this.loopNum = loopNum;
@@ -18,7 +18,7 @@ public class DeleteValueThread implements Runnable {
         try{
             for(int i = 0; i < loopNum; i++) {
                 synchronized(counter) {
-                counter.dangerDelete(deleteValue);
+                ValueCount.dangerDelete(deleteValue);
                 Thread.sleep(delayTime);
             }
             }

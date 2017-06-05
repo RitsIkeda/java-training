@@ -2,7 +2,6 @@
 
 package jpl.ch14.ex09;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class OutThreadStructureTest {
@@ -30,7 +29,8 @@ public class OutThreadStructureTest {
         threadA_1.start();
         threadA_2.start();
 
-        ThreadGroup groupB = new ThreadGroup(groupA, "groupB");
+        @SuppressWarnings("unused")
+		ThreadGroup groupB = new ThreadGroup(groupA, "groupB");
         new Thread(new Runnable() {
                 public void run() { OutThreadStructure.outStructure(groupA);}
         }).start();

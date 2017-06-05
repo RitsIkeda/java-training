@@ -3,7 +3,6 @@ package jpl.ch14.ex06;
 public class CountUp {
 
     private long startSec;
-    private final double milsecToSec = 0.01;
 
     public static void main(String[] args ) {
         CountUp countUp = new CountUp();

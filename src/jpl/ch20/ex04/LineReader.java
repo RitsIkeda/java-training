@@ -7,7 +7,7 @@ import java.io.StringReader;
 
 public class LineReader extends FilterReader {
 
-	protected LineReader(Reader reader) {
+	public LineReader(Reader reader) {
 		super(reader);
 	}
 

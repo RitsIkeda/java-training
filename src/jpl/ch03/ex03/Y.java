@@ -35,9 +35,11 @@ public class Y extends X {
     }
     public static void main(String[] args) {
         System.out.println("X class create");
-        X x = new X();
+        @SuppressWarnings("unused")
+		X x = new X();
         System.out.println("Y class create");
-        Y y = new Y();
+        @SuppressWarnings("unused")
+		Y y = new Y();
     }
 
 }
