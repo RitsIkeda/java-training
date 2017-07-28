@@ -12,7 +12,7 @@ public final class FilterTest {
 
 
 	public static void main(String[] args) throws IOException {
-		String  contents = new String(Files.readAllBytes(Paths.get("src\\java8\\ch02\\ex01\\GettysburgAdress.txt")), StandardCharsets.UTF_8);
+		String contents = new String(Files.readAllBytes(Paths.get("src\\java8\\ch02\\ex01\\GettysburgAdress.txt")), StandardCharsets.UTF_8);
 		filterTest(contents, 5,5);
 	}
 
