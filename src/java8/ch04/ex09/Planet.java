@@ -14,10 +14,6 @@ import javafx.util.Duration;
 
 public final class Planet extends Application {
 
-	public static void main(String[] args) {
-		launch(args);
-
-	}
 
    public void start(Stage stage) {
 
