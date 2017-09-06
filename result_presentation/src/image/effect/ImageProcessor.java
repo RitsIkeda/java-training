@@ -74,7 +74,6 @@ public class ImageProcessor {
 		 src.copyTo(dst);
 		 CascadeClassifier faceDetector = new CascadeClassifier(xml);
 		 MatOfRect faces = new MatOfRect();
-
 		 faceDetector.detectMultiScale(dst, faces);
 	        for (Rect rect : faces.toArray()) {
 	            Imgproc.rectangle(
@@ -199,10 +198,11 @@ public class ImageProcessor {
 		 return result;
 	 }
 
-	 public static void synthesize(Mat src, Mat dst, Mat stamp, Mat filter ) {
+	 public static void synthesize(Mat src, Mat dst, Mat stamp, Mat filter, int transparent ) {
 		 Core.multiply(stamp, filter, stamp, 1.0 /255);
 		 Mat not = new Mat();
 		 Core.bitwise_not(filter, not);
+		 Core.add(not, new Scalar(transparent,transparent,transparent), not);
 		 Core.multiply(src, not, dst, 1.0 /255);
 		 Core.add(dst,stamp,dst);
 	 }
