@@ -19,4 +19,4 @@ java研修については、[柴田先生のブログ](http://yshibata.blog.so-n
 |src/interpret|リフレクションを用いたインタプリタプログラムです。|
 |src/java8|Java8 実践プログラミング 練習問題の回答です。|
 |test|練習問題のテストコードです。|
-|result_presentation|研修の最後に行われる成果発表会の成果物です。|
+|result_presentation<br>|研修の最後に行われる成果発表会の成果物です。<br>(アプリの起動にはopenCV3.3のインストールが必要です。<br>最新版は、[開発用リポジトリ](https://github.com/houkiboshiComet/OpenCVWithJavaFX)で管理します。)|
