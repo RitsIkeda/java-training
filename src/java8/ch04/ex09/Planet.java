@@ -40,6 +40,9 @@ public final class Planet extends Application {
 	     stage.setScene(new Scene(group));
 	     stage.show();
 	     pathTransition.play();
+   }
 
+   public static void main(String[] args) {
+       launch(args);
    }
 }
