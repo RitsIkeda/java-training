@@ -39,33 +39,35 @@ public class SimpleBrowser extends Application {
 	}
 	 private void load(Stage stage) {
 		 if(USE_PROXY) {
-			 System.setProperty("https.proxyHost", PROXY_SET);
-			 System.setProperty("https.proxyUser", PROXY_USER);
-			 System.setProperty("https.proxyproxyPassword", PROXY_PASS);
-			 System.setProperty("https.proxyPort", PROXY_PORT);
-			 System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
+			 setProxy();
 		 }
-
 		 HBox box = new HBox(backButton, urlField);
 		 HBox.setHgrow(urlField, Priority.ALWAYS);
 		 BorderPane pane = new BorderPane();
 		 pane.setTop(box);
 		 pane.setCenter(browser);
 
-		 if(USE_PROXY) {
-			 Authenticator.setDefault(new Authenticator() {
-					@Override
-					public PasswordAuthentication getPasswordAuthentication()
-					{
-						return new PasswordAuthentication(PROXY_USER, PROXY_PASS.toCharArray());
-					}
-				});
-		 }
 
 		 stage.setScene(new Scene(pane, 1000, 600));
 		 stage.setTitle("Simple Browser");
 		 stage.show();
 	}
+
+	private void setProxy() {
+		 System.setProperty("https.proxyHost", PROXY_SET);
+		 System.setProperty("https.proxyUser", PROXY_USER);
+		 System.setProperty("https.proxyproxyPassword", PROXY_PASS);
+		 System.setProperty("https.proxyPort", PROXY_PORT);
+		 System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
+		 Authenticator.setDefault(new Authenticator() {
+				@Override
+				public PasswordAuthentication getPasswordAuthentication()
+				{
+					return new PasswordAuthentication(PROXY_USER, PROXY_PASS.toCharArray());
+				}
+			});
+	}
+
 	private void setAction() {
 		 backButton.setOnAction(
 				 e -> {
